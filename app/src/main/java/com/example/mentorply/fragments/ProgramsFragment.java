@@ -1,4 +1,4 @@
-package com.example.instaclone.fragments;
+package com.example.mentorply.fragments;
 
 import android.os.Bundle;
 
@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mentorply.R;
+import com.example.mentorply.adapters.ProgramAdapter;
 import com.example.mentorply.models.Program;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -25,29 +27,29 @@ import java.util.List;
 
 public class ProgramsFragment extends Fragment {
 
-    public static final String TAG = "PostsFragment";
-    private RecyclerView rvPosts;
-    public ProgramsAdapter adapter;
-    protected List <Program> allPosts;
-    public int totalPosts = 20;
+    public static final String TAG = "ProgramsFragment";
+    private RecyclerView rvPrograms;
+    public ProgramAdapter adapter;
+    protected List <Program> allPrograms;
+    //public int totalPrograms = 20;
     private SwipeRefreshLayout swipeContainer;
 
-    public PostsFragment() {
+    public ProgramsFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_posts, container, false);
+        return inflater.inflate(R.layout.fragment_programs, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rvPosts = view.findViewById(R.id.rvPosts);
-        allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), allPosts);
+        rvPrograms = view.findViewById(R.id.rvPrograms);
+        allPrograms = new ArrayList<>();
+        adapter = new ProgramAdapter(getContext(), allPrograms);
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -57,7 +59,7 @@ public class ProgramsFragment extends Fragment {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                populateHomePosts();
+                populateHomePrograms();
             }
         });
         // Configure the refreshing colors
@@ -72,25 +74,25 @@ public class ProgramsFragment extends Fragment {
         //1. create the adapter
         //2. create the data source
         //3. set the adapter on the recycler view
-        rvPosts.setAdapter(adapter);
+        rvPrograms.setAdapter(adapter);
         //4. set the layout manager on the recycler view
-        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
-        queryPosts();
+        rvPrograms.setLayoutManager(new LinearLayoutManager(getContext()));
+        queryPrograms();
     }
 
-    public void populateHomePosts() {
+    public void populateHomePrograms() {
         adapter.clear();
         // ...the data has come back, add new items to your adapter...
-        adapter.addAll(allPosts);
+        adapter.addAll(allPrograms);
         // Now we call setRefreshing(false) to signal refresh has finished
         swipeContainer.setRefreshing(false);
     }
 
-    protected void queryPosts() {
+    protected void queryPrograms() {
         ParseQuery<Program> query = ParseQuery.getQuery(Program.class);
         query.include(Program.KEY_NAME);
-        //query.setLimit(totalPosts);
-        query.addDescendingOrder(Post.KEY_CREATED_KEY);
+        //query.setLimit(totalPrograms);
+        query.addDescendingOrder(Program.KEY_NAME);
         query.findInBackground(new FindCallback<Program>() {
             @Override
             public void done(List<Program> programs, ParseException e) {
@@ -101,7 +103,7 @@ public class ProgramsFragment extends Fragment {
                 for (Program program: programs){
                     Log.i(TAG, "Program: "+program.getName()+", Description: "+program.getDescription());
                 }
-                allPosts.addAll(programs);
+                allPrograms.addAll(programs);
                 adapter.notifyDataSetChanged();
             }
         });
