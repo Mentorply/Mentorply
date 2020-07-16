@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mentorply.models.Program;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -26,8 +27,8 @@ public class ProgramsFragment extends Fragment {
 
     public static final String TAG = "PostsFragment";
     private RecyclerView rvPosts;
-    public PostsAdapter adapter;
-    protected List <Post> allPosts;
+    public ProgramsAdapter adapter;
+    protected List <Program> allPosts;
     public int totalPosts = 20;
     private SwipeRefreshLayout swipeContainer;
 
@@ -86,21 +87,21 @@ public class ProgramsFragment extends Fragment {
     }
 
     protected void queryPosts() {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-        query.setLimit(totalPosts);
+        ParseQuery<Program> query = ParseQuery.getQuery(Program.class);
+        query.include(Program.KEY_NAME);
+        //query.setLimit(totalPosts);
         query.addDescendingOrder(Post.KEY_CREATED_KEY);
-        query.findInBackground(new FindCallback<Post>() {
+        query.findInBackground(new FindCallback<Program>() {
             @Override
-            public void done(List<Post> posts, ParseException e) {
+            public void done(List<Program> programs, ParseException e) {
                 if (e!=null){
-                    Log.e(TAG, "Issue with getting posts", e);
+                    Log.e(TAG, "Issue with getting programs", e);
                     return;
                 }
-                for (Post post: posts){
-                    Log.i(TAG, "Post: "+post.getDescription()+", username: "+post.getUser());
+                for (Program program: programs){
+                    Log.i(TAG, "Program: "+program.getName()+", Description: "+program.getDescription());
                 }
-                allPosts.addAll(posts);
+                allPosts.addAll(programs);
                 adapter.notifyDataSetChanged();
             }
         });
