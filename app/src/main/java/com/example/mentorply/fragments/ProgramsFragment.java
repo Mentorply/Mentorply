@@ -1,5 +1,7 @@
 package com.example.mentorply.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,20 +11,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.mentorply.R;
 import com.example.mentorply.adapters.ProgramAdapter;
 import com.example.mentorply.models.Program;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ProgramsFragment extends Fragment {
@@ -43,10 +53,16 @@ public class ProgramsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_programs, container, false);
     }
+    public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         rvPrograms = view.findViewById(R.id.rvPrograms);
         allPrograms = new ArrayList<>();
         adapter = new ProgramAdapter(getContext(), allPrograms);
@@ -78,6 +94,8 @@ public class ProgramsFragment extends Fragment {
         //4. set the layout manager on the recycler view
         rvPrograms.setLayoutManager(new LinearLayoutManager(getContext()));
         queryPrograms();
+
+
     }
 
     public void populateHomePrograms() {
@@ -108,4 +126,88 @@ public class ProgramsFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.programs_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_create){
+            Toast.makeText(getActivity(), "Create", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.action_add_by_code){
+            Toast.makeText(getActivity(), "Add by Code", Toast.LENGTH_SHORT).show();
+            String programCode = openDialog();
+            querySpecificProgram(programCode);
+
+        }
+        else if (id == R.id.action_add){
+            Toast.makeText(getActivity(), "Add", Toast.LENGTH_SHORT).show();
+            
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void querySpecificProgram(String programCode) {
+        // Specify which class to query
+        ParseQuery<Program> query = ParseQuery.getQuery(Program.class);
+        // Define our query conditions
+        query.whereEqualTo("objectId", programCode);
+        query.getFirstInBackground(new GetCallback<Program>()
+        {
+            public void done(Program program, ParseException e)
+            {
+                if(e == null)
+                {
+                    //object exists
+                    Toast.makeText(getActivity(), "The program exists!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    if(e.getCode() == ParseException.OBJECT_NOT_FOUND)
+                    {
+                        //object doesn't exist
+                        Toast.makeText(getActivity(), "The program does not exist", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        //unknown error, debug
+                    }
+                }
+            }
+        });
+
+    }
+
+    private String openDialog() {
+       AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+       builder.setTitle("Title");
+       final String[] m_Text = new String[1];
+       // Set up the input
+       final EditText input = new EditText(getContext());
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+       input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+       builder.setView(input);
+
+       // Set up the buttons
+       builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+           @Override
+           public void onClick(DialogInterface dialog, int which) {
+               m_Text[0] = input.getText().toString();
+           }
+       });
+       builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+           @Override
+           public void onClick(DialogInterface dialog, int which) {
+               dialog.cancel();
+           }
+       });
+
+       builder.show();
+       return m_Text[0];
+   }
 }

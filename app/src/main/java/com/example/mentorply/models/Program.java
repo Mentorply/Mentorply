@@ -12,6 +12,7 @@ public class Program extends ParseObject{
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_PROGRAM_PICTURE= "programPicture";
+    public static final String KEY_OBJECT_ID = "objectId";
 
     public String getName(){ return getString(KEY_NAME); }
     public void setName(String name){
@@ -27,4 +28,6 @@ public class Program extends ParseObject{
     public void setImage(ParseFile parseFile){
         put(KEY_PROGRAM_PICTURE, parseFile);
     }
+
+    public String getObjectId(){ return getString(KEY_OBJECT_ID); }
 }
