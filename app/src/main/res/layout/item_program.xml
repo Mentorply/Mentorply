@@ -26,7 +26,6 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/ivProfileImage"
-        android:inputType="textMultiLine"
         android:text="This is a lovely program! This is MentorFIU!!" />
 
 
