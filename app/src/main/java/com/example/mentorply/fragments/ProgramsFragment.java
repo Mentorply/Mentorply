@@ -2,6 +2,7 @@ package com.example.mentorply.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.mentorply.CreateProgramActivity;
+import com.example.mentorply.LoginActivity;
+import com.example.mentorply.OnboardingActivity;
+import com.example.mentorply.ProgramCodeActivity;
 import com.example.mentorply.R;
 import com.example.mentorply.adapters.ProgramAdapter;
 import com.example.mentorply.models.Program;
@@ -119,7 +124,7 @@ public class ProgramsFragment extends Fragment {
                     return;
                 }
                 for (Program program: programs){
-                    Log.i(TAG, "Program: "+program.getName()+", Description: "+program.getDescription());
+                    Log.i(TAG, "Program: "+program.getName()+", Description: "+program.getDescription()+ ", Program Code: ");
                 }
                 allPrograms.addAll(programs);
                 adapter.notifyDataSetChanged();
@@ -135,24 +140,27 @@ public class ProgramsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_create){
-            Toast.makeText(getActivity(), "Create", Toast.LENGTH_SHORT).show();
-        }
-        else if (id == R.id.action_add_by_code){
-            Toast.makeText(getActivity(), "Add by Code", Toast.LENGTH_SHORT).show();
-            String programCode = openDialog();
-            querySpecificProgram(programCode);
-
-        }
-        else if (id == R.id.action_add){
-            Toast.makeText(getActivity(), "Add", Toast.LENGTH_SHORT).show();
-            
+        switch (item.getItemId()) {
+            case R.id.action_create:
+                Intent i = new Intent(getContext(), CreateProgramActivity.class);
+                startActivity(i);
+                Toast.makeText(getActivity(), "Create", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_add:
+                Intent j = new Intent(getContext(), ProgramCodeActivity.class);
+                startActivity(j);
+                //finish();
+                Toast.makeText(getActivity(), "Add by Code", Toast.LENGTH_SHORT).show();
+                break;
+            /*default:
+                fragment = new ProfileFragment();
+                break;
+             */
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void querySpecificProgram(String programCode) {
+    /*private void querySpecificProgram(String programCode) {
         // Specify which class to query
         ParseQuery<Program> query = ParseQuery.getQuery(Program.class);
         // Define our query conditions
@@ -181,9 +189,9 @@ public class ProgramsFragment extends Fragment {
             }
         });
 
-    }
+    }*/
 
-    private String openDialog() {
+   /* private String openDialog() {
        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
        builder.setTitle("Title");
        final String[] m_Text = new String[1];
@@ -209,5 +217,5 @@ public class ProgramsFragment extends Fragment {
 
        builder.show();
        return m_Text[0];
-   }
+   }*/
 }

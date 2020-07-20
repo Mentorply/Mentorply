@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#6F52A6"
+    android:background="#FFFFFF"
     tools:context=".OnboardingActivity">
 
     <TextView
@@ -17,7 +17,9 @@
         android:fontFamily="sans-serif-thin"
         android:text="Mentorply"
         android:textAlignment="center"
+        android:textColor="#673AB7"
         android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="79dp" />
@@ -31,10 +33,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="164dp"
         android:layout_marginBottom="187dp"
+        android:shadowColor="#C59191"
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="595dp" />
 
-    </RelativeLayout>
+</RelativeLayout>

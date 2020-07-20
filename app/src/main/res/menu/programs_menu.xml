@@ -10,13 +10,7 @@
     <item
         android:id="@+id/action_add"
         android:icon="@android:drawable/ic_menu_more"
-        android:title="Add"
+        android:title="Add by Code"
         app:showAsAction="never">
-    <menu>
-        <item
-            android:id="@+id/action_add_by_code"
-            android:title="Add by Code"
-            />
-    </menu>
         </item>
 </menu>

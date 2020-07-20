@@ -12,7 +12,8 @@ public class Program extends ParseObject{
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_PROGRAM_PICTURE= "programPicture";
-    public static final String KEY_OBJECT_ID = "objectId";
+    //public static final String KEY_OBJECT_ID = "objectId";
+    //public static final String KEY_PROGRAM_CODE = "objectId";
 
     public String getName(){ return getString(KEY_NAME); }
     public void setName(String name){
@@ -29,5 +30,8 @@ public class Program extends ParseObject{
         put(KEY_PROGRAM_PICTURE, parseFile);
     }
 
-    public String getObjectId(){ return getString(KEY_OBJECT_ID); }
+    //public String getObjectId(){ return getString(KEY_OBJECT_ID); }
+
+    //public String getProgramCode(){ return getString(KEY_PROGRAM_CODE); }
 }
+//classes/Program
