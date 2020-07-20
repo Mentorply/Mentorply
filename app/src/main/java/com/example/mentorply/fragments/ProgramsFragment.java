@@ -34,6 +34,7 @@ import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -113,6 +114,7 @@ public class ProgramsFragment extends Fragment {
 
     protected void queryPrograms() {
         ParseQuery<Program> query = ParseQuery.getQuery(Program.class);
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.include(Program.KEY_NAME);
         //query.setLimit(totalPrograms);
         query.addDescendingOrder(Program.KEY_NAME);
@@ -124,8 +126,9 @@ public class ProgramsFragment extends Fragment {
                     return;
                 }
                 for (Program program: programs){
-                    Log.i(TAG, "Program: "+program.getName()+", Description: "+program.getDescription()+ ", Program Code: ");
-                }
+                    program.saveInBackground();
+                    Log.i(TAG, "Program: "+program.getName()+", Description: "+program.getDescription()+ ", Program Code: "+program.getObjectId());
+                }//+program.getObjectId()
                 allPrograms.addAll(programs);
                 adapter.notifyDataSetChanged();
             }
