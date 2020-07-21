@@ -56,6 +56,7 @@ public class CreateProgramActivity extends AppCompatActivity {
         Program program = new Program();
         program.setName(programName);
         program.setDescription(description);
+        program.setDirector(ParseUser.getCurrentUser());
         program.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

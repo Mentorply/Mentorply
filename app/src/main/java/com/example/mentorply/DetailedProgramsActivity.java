@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mentorply.models.Program;
+import com.parse.ParseRelation;
 
 import org.parceler.Parcels;
 

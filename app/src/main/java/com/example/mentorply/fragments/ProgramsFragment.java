@@ -34,6 +34,7 @@ import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.lang.reflect.Array;
@@ -116,8 +117,10 @@ public class ProgramsFragment extends Fragment {
         ParseQuery<Program> query = ParseQuery.getQuery(Program.class);
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.include(Program.KEY_NAME);
+        query.whereEqualTo("programDirector", ParseUser.getCurrentUser());
         //query.setLimit(totalPrograms);
         query.addDescendingOrder(Program.KEY_NAME);
+
         query.findInBackground(new FindCallback<Program>() {
             @Override
             public void done(List<Program> programs, ParseException e) {
@@ -127,7 +130,7 @@ public class ProgramsFragment extends Fragment {
                 }
                 for (Program program: programs){
                     program.saveInBackground();
-                    Log.i(TAG, "Program: "+program.getName()+", Description: "+program.getDescription()+ ", Program Code: "+program.getObjectId());
+                    Log.i(TAG, "Program: "+program.getName()+", Description: "+program.getDescription()+ ", Program Director: "+program.getDirector());
                 }//+program.getObjectId()
                 allPrograms.addAll(programs);
                 adapter.notifyDataSetChanged();
@@ -162,63 +165,4 @@ public class ProgramsFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /*private void querySpecificProgram(String programCode) {
-        // Specify which class to query
-        ParseQuery<Program> query = ParseQuery.getQuery(Program.class);
-        // Define our query conditions
-        query.whereEqualTo("objectId", programCode);
-        query.getFirstInBackground(new GetCallback<Program>()
-        {
-            public void done(Program program, ParseException e)
-            {
-                if(e == null)
-                {
-                    //object exists
-                    Toast.makeText(getActivity(), "The program exists!", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    if(e.getCode() == ParseException.OBJECT_NOT_FOUND)
-                    {
-                        //object doesn't exist
-                        Toast.makeText(getActivity(), "The program does not exist", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        //unknown error, debug
-                    }
-                }
-            }
-        });
-
-    }*/
-
-   /* private String openDialog() {
-       AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-       builder.setTitle("Title");
-       final String[] m_Text = new String[1];
-       // Set up the input
-       final EditText input = new EditText(getContext());
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-       input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-       builder.setView(input);
-
-       // Set up the buttons
-       builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-           @Override
-           public void onClick(DialogInterface dialog, int which) {
-               m_Text[0] = input.getText().toString();
-           }
-       });
-       builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-           @Override
-           public void onClick(DialogInterface dialog, int which) {
-               dialog.cancel();
-           }
-       });
-
-       builder.show();
-       return m_Text[0];
-   }*/
 }

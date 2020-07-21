@@ -3,6 +3,7 @@ package com.example.mentorply.models;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 
@@ -12,8 +13,10 @@ public class Program extends ParseObject{
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_PROGRAM_PICTURE= "programPicture";
-    //public static final String KEY_OBJECT_ID = "objectId";
-    //public static final String KEY_PROGRAM_CODE = "objectId";
+    public static final String KEY_MENTORS = "mentors";
+    public static final String KEY_MENTEES = "mentees";
+    public static final String KEY_DIRECTOR = "programDirector";
+
 
     public String getName(){ return getString(KEY_NAME); }
     public void setName(String name){
@@ -30,8 +33,19 @@ public class Program extends ParseObject{
         put(KEY_PROGRAM_PICTURE, parseFile);
     }
 
-    //public String getObjectId(){ return getString(KEY_OBJECT_ID); }
+    public ParseRelation getMentors(){return getRelation(KEY_MENTORS);}
+    public void addMentor(ParseRelation relation, ParseUser user){ relation.add(user); }
 
-    //public String getProgramCode(){ return getString(KEY_PROGRAM_CODE); }
+    public ParseRelation getMentees(){return getRelation(KEY_MENTEES);}
+    public void addMentee(ParseRelation relation, ParseUser user){ relation.add(user); }
+
+    public ParseUser getDirector(){
+        return getParseUser(KEY_DIRECTOR);
+    }
+    public void setDirector(ParseUser user){
+        put(KEY_DIRECTOR, user);
+    }
+
+
 }
 //classes/Program

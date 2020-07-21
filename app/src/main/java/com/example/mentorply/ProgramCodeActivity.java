@@ -7,23 +7,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.mentorply.models.Program;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public class ProgramCodeActivity extends AppCompatActivity {
 
     EditText etProgramCode;
+    ToggleButton btnRole;
     Button btnSubmit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_program_code);
 
         etProgramCode = findViewById(R.id.etProgramCode);
+        btnRole = findViewById(R.id.btnRole);
         btnSubmit = findViewById(R.id.btnSubmit);
+
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,12 +39,13 @@ public class ProgramCodeActivity extends AppCompatActivity {
                     Toast.makeText(ProgramCodeActivity.this, "Program Code cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                validateProgram(programCode);
+                boolean toggleButtonState = btnRole.isChecked(); // false is mentee and true is mentor
+                validateProgram(programCode, toggleButtonState);
             }
         });
     }
 
-    private void validateProgram(String programCode) {
+    private void validateProgram(String programCode, final boolean toggleButtonState) {
         // Specify which class to query
         ParseQuery<Program> query = ParseQuery.getQuery(Program.class);
         // Define our query conditions
@@ -47,10 +54,18 @@ public class ProgramCodeActivity extends AppCompatActivity {
         {
             public void done(Program program, ParseException e)
             {
-                if(e == null)
+                if (e == null)
                 {
                     //object exists
-                    Toast.makeText(ProgramCodeActivity.this, "The program exists!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProgramCodeActivity.this, "Program Name: "+program.getName(), Toast.LENGTH_SHORT).show();
+                    if (!toggleButtonState) {
+                        seeIfUserIsInProgram(ParseUser.getCurrentUser(), program);
+                        program.addMentee(program.getMentees(), ParseUser.getCurrentUser());
+                    }
+                    else{
+
+                    }
+
                 }
                 else
                 {
@@ -67,6 +82,6 @@ public class ProgramCodeActivity extends AppCompatActivity {
             }
         });
 
-
     }
+
 }
