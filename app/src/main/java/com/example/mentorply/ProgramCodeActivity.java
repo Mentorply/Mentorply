@@ -10,8 +10,10 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.mentorply.models.Program;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -59,10 +61,14 @@ public class ProgramCodeActivity extends AppCompatActivity {
                     //object exists
                     Toast.makeText(ProgramCodeActivity.this, "Program Name: "+program.getName(), Toast.LENGTH_SHORT).show();
                     if (!toggleButtonState) {
-                        seeIfUserIsInProgram(ParseUser.getCurrentUser(), program);
+                        //program.getMentees().
+                        //seeIfUserIsInProgram(ParseUser.getCurrentUser(), program.getMentees().getQuery());
                         program.addMentee(program.getMentees(), ParseUser.getCurrentUser());
+                        program.saveInBackground();
                     }
                     else{
+                        program.addMentor(program.getMentors(), ParseUser.getCurrentUser());
+                        program.saveInBackground();
 
                     }
 
@@ -82,6 +88,23 @@ public class ProgramCodeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean seeIfUserIsInProgram(ParseUser currentUser, ParseQuery query) {
+        query.whereEqualTo("objectId", currentUser);
+        final boolean[] inProgram = {false};
+        query.getFirstInBackground(new GetCallback<ParseUser>() {
+            @Override
+            public void done(ParseUser object, ParseException e) {
+                if (e==null){
+                    //user is in the program
+                    Toast.makeText(ProgramCodeActivity.this, "The user is already in this program", Toast.LENGTH_SHORT).show();
+                    inProgram[0] = true;
+
+                }
+            }
+        });
+        return inProgram[0];
     }
 
 }
