@@ -7,6 +7,7 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ public class Program extends ParseObject{
     public static final String KEY_MENTORS = "mentors";
     public static final String KEY_MENTEES = "mentees";
     public static final String KEY_DIRECTOR = "programDirector";
-
+    HashSet <ParseUser> mentorSet = new HashSet<>();
 
     public String getName(){ return getString(KEY_NAME); }
     public void setName(String name){
@@ -36,11 +37,23 @@ public class Program extends ParseObject{
         put(KEY_PROGRAM_PICTURE, parseFile);
     }
 
-    public ArrayList getMentors(){return (ArrayList <ParseUser>) get(KEY_MENTORS);}
-    public void addMentor(ParseUser user){ add(KEY_MENTORS, user); }
+    public ArrayList getMentors(){ return (ArrayList <ParseUser>) get(KEY_MENTORS); }
+    public void addMentor(ParseUser user){ addUnique(KEY_MENTORS, user); }
+    public void removeMentor(ParseUser user){
+        ArrayList <ParseUser> list = new ArrayList<>();
+        list.add(user);
+        removeAll(KEY_MENTORS, list);
+    }
+
 
     public List getMentees(){return (ArrayList <ParseUser>) get(KEY_MENTEES);}
-    public void addMentee(ParseUser user){ add(KEY_MENTEES, user); }
+    public void addMentee(ParseUser user){ addUnique(KEY_MENTEES, user); }
+    public void removeMentee(ParseUser user){
+        ArrayList <ParseUser> list = new ArrayList<>();
+        list.add(user);
+        removeAll(KEY_MENTEES, list);
+    }
+
 
     public ParseUser getDirector(){
         return getParseUser(KEY_DIRECTOR);

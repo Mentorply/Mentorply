@@ -114,12 +114,12 @@ public class ProgramsFragment extends Fragment {
     }
 
     protected void queryPrograms() {
-        /*
+
         ParseQuery<Program> directorQuery = ParseQuery.getQuery(Program.class);
         directorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         directorQuery.include(Program.KEY_NAME);
         directorQuery.whereEqualTo("programDirector", ParseUser.getCurrentUser());
-
+/*
         ParseQuery<Program> menteeQuery = ParseQuery.getQuery(Program.class);
         menteeQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         menteeQuery.include(Program.KEY_NAME);
@@ -137,13 +137,13 @@ public class ProgramsFragment extends Fragment {
         queries.add(mentorQuery);
 
         ParseQuery<Program> mainQuery = ParseQuery.or(queries);
-*/
-        //mainQuery.addDescendingOrder(Program.KEY_NAME);
-        ParseQuery<Program> directorQuery = ParseQuery.getQuery(Program.class);
-        directorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        directorQuery.include(Program.KEY_NAME);
-        directorQuery.whereEqualTo("programDirector", ParseUser.getCurrentUser());
 
+        //mainQuery.addDescendingOrder(Program.KEY_NAME);
+        //ParseQuery<Program> directorQuery = ParseQuery.getQuery(Program.class);
+        //directorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        //directorQuery.include(Program.KEY_NAME);
+        //mainQuery.whereEqualTo("programDirector", ParseUser.getCurrentUser());
+*/
         directorQuery.findInBackground(new FindCallback<Program>() {
             @Override
             public void done(List<Program> programs, ParseException e) {

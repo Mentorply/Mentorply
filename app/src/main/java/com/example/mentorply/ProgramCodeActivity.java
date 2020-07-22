@@ -67,12 +67,14 @@ public class ProgramCodeActivity extends AppCompatActivity {
                     if (!toggleButtonState) {
                         //if (seeIfUserIsInProgram(ParseUser.getCurrentUser(), program)){
                         program.addMentee(ParseUser.getCurrentUser());
+                        program.removeMentor(ParseUser.getCurrentUser());
                         program.saveInBackground();
                         //}
                     }
                     else{
                        // if (seeIfUserIsInProgram(ParseUser.getCurrentUser(), program)){
                             program.addMentor(ParseUser.getCurrentUser());
+                            program.removeMentee(ParseUser.getCurrentUser());
                             program.saveInBackground();
                        //}
                     }
