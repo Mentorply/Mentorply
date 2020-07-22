@@ -114,14 +114,37 @@ public class ProgramsFragment extends Fragment {
     }
 
     protected void queryPrograms() {
-        ParseQuery<Program> query = ParseQuery.getQuery(Program.class);
-        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query.include(Program.KEY_NAME);
-        query.whereEqualTo("programDirector", ParseUser.getCurrentUser());
-        //query.setLimit(totalPrograms);
-        query.addDescendingOrder(Program.KEY_NAME);
+        /*
+        ParseQuery<Program> directorQuery = ParseQuery.getQuery(Program.class);
+        directorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        directorQuery.include(Program.KEY_NAME);
+        directorQuery.whereEqualTo("programDirector", ParseUser.getCurrentUser());
 
-        query.findInBackground(new FindCallback<Program>() {
+        ParseQuery<Program> menteeQuery = ParseQuery.getQuery(Program.class);
+        menteeQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        menteeQuery.include(Program.KEY_NAME);
+        menteeQuery.whereEqualTo("mentee", ParseUser.getCurrentUser());
+
+        ParseQuery<Program> mentorQuery = ParseQuery.getQuery(Program.class);
+        mentorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        mentorQuery.include(Program.KEY_NAME);
+        mentorQuery.whereEqualTo("mentor", ParseUser.getCurrentUser());
+
+
+        List<ParseQuery<Program>> queries = new ArrayList<ParseQuery<Program>>();
+        queries.add(directorQuery);
+        queries.add(menteeQuery);
+        queries.add(mentorQuery);
+
+        ParseQuery<Program> mainQuery = ParseQuery.or(queries);
+*/
+        //mainQuery.addDescendingOrder(Program.KEY_NAME);
+        ParseQuery<Program> directorQuery = ParseQuery.getQuery(Program.class);
+        directorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        directorQuery.include(Program.KEY_NAME);
+        directorQuery.whereEqualTo("programDirector", ParseUser.getCurrentUser());
+
+        directorQuery.findInBackground(new FindCallback<Program>() {
             @Override
             public void done(List<Program> programs, ParseException e) {
                 if (e!=null){

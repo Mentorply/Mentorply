@@ -6,6 +6,9 @@ import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @ParseClassName("Program")
 public class Program extends ParseObject{
@@ -33,11 +36,11 @@ public class Program extends ParseObject{
         put(KEY_PROGRAM_PICTURE, parseFile);
     }
 
-    public ParseRelation getMentors(){return getRelation(KEY_MENTORS);}
-    public void addMentor(ParseRelation relation, ParseUser user){ relation.add(user); }
+    public ArrayList getMentors(){return (ArrayList <ParseUser>) get(KEY_MENTORS);}
+    public void addMentor(ParseUser user){ add(KEY_MENTORS, user); }
 
-    public ParseRelation getMentees(){return getRelation(KEY_MENTEES);}
-    public void addMentee(ParseRelation relation, ParseUser user){ relation.add(user); }
+    public List getMentees(){return (ArrayList <ParseUser>) get(KEY_MENTEES);}
+    public void addMentee(ParseUser user){ add(KEY_MENTEES, user); }
 
     public ParseUser getDirector(){
         return getParseUser(KEY_DIRECTOR);

@@ -3,6 +3,7 @@ package com.example.mentorply;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +18,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.List;
+
 public class ProgramCodeActivity extends AppCompatActivity {
 
+    public static final String TAG = "ProgramCodeActivity";
     EditText etProgramCode;
     ToggleButton btnRole;
     Button btnSubmit;
@@ -61,17 +65,17 @@ public class ProgramCodeActivity extends AppCompatActivity {
                     //object exists
                     Toast.makeText(ProgramCodeActivity.this, "Program Name: "+program.getName(), Toast.LENGTH_SHORT).show();
                     if (!toggleButtonState) {
-                        //program.getMentees().
-                        //seeIfUserIsInProgram(ParseUser.getCurrentUser(), program.getMentees().getQuery());
-                        program.addMentee(program.getMentees(), ParseUser.getCurrentUser());
+                        //if (seeIfUserIsInProgram(ParseUser.getCurrentUser(), program)){
+                        program.addMentee(ParseUser.getCurrentUser());
                         program.saveInBackground();
+                        //}
                     }
                     else{
-                        program.addMentor(program.getMentors(), ParseUser.getCurrentUser());
-                        program.saveInBackground();
-
+                       // if (seeIfUserIsInProgram(ParseUser.getCurrentUser(), program)){
+                            program.addMentor(ParseUser.getCurrentUser());
+                            program.saveInBackground();
+                       //}
                     }
-
                 }
                 else
                 {
@@ -90,21 +94,25 @@ public class ProgramCodeActivity extends AppCompatActivity {
 
     }
 
-    private boolean seeIfUserIsInProgram(ParseUser currentUser, ParseQuery query) {
-        query.whereEqualTo("objectId", currentUser);
-        final boolean[] inProgram = {false};
-        query.getFirstInBackground(new GetCallback<ParseUser>() {
-            @Override
-            public void done(ParseUser object, ParseException e) {
-                if (e==null){
-                    //user is in the program
-                    Toast.makeText(ProgramCodeActivity.this, "The user is already in this program", Toast.LENGTH_SHORT).show();
-                    inProgram[0] = true;
-
-                }
+    private boolean seeIfUserIsInProgram(ParseUser currentUser, Program program) {
+        List<ParseUser> mentees = program.getMentees();
+        int i = 0;
+        //ParseUser mentee = null;
+        while(i<mentees.size()){
+            if (mentees.get(i).equals(currentUser)){
+                return true;
             }
-        });
-        return inProgram[0];
+            i++;
+        }
+        i=0;
+        List<ParseUser> mentors = program.getMentors();
+        while(i<mentors.size()){
+            if (mentors.get(i).equals(currentUser)){
+                return true;
+            }
+            i++;
+        }
+        return false;
     }
 
 }
