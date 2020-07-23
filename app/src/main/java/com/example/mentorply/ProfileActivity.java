@@ -7,7 +7,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.mentorply.models.Program;
+import com.parse.Parse;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -25,10 +29,8 @@ public class ProfileActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         tvDescription = findViewById(R.id.tvDescription);
 
-        tvName.setText(user.getUsername());
-        //tvDescription.setText(user.getDescri);
-        user = ParseUser.getCurrentUser();
 
+        user = Parcels.unwrap(getIntent().getParcelableExtra(ParseUser.class.getSimpleName()));
         tvName.setText(user.getString("username"));
         tvDescription.setText(user.getString("description"));
         if (user.getParseFile("profilePicture")!=null){

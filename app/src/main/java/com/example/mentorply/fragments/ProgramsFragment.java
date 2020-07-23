@@ -114,21 +114,21 @@ public class ProgramsFragment extends Fragment {
     }
 
     protected void queryPrograms() {
-/*
+///*
         ParseQuery<Program> directorQuery = ParseQuery.getQuery(Program.class);
         directorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         directorQuery.include(Program.KEY_NAME);
         directorQuery.whereEqualTo("programDirector", ParseUser.getCurrentUser());
-*/
+//*/
 
-
+/*
         ParseQuery<Program> mentorQuery = ParseQuery.getQuery(Program.class);
         mentorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         mentorQuery.include(Program.KEY_NAME);
         ArrayList<ParseUser> mentor = new ArrayList<>();
         mentor.add(ParseUser.getCurrentUser());
         mentorQuery.whereContainedIn("mentor", mentor);
-
+*/
 ///* where={"objectId":"zpngPUMcHG"}
 /*
         ParseQuery<Program> menteeQuery = ParseQuery.getQuery(Program.class);
@@ -159,7 +159,7 @@ public class ProgramsFragment extends Fragment {
         //directorQuery.include(Program.KEY_NAME);
         //mainQuery.whereEqualTo("programDirector", ParseUser.getCurrentUser());
 //*/
-        mentorQuery.findInBackground(new FindCallback<Program>() {
+        directorQuery.findInBackground(new FindCallback<Program>() {
             @Override
             public void done(List<Program> programs, ParseException e) {
                 if (e!=null){
