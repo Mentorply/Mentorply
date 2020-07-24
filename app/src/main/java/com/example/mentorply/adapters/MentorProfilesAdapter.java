@@ -72,7 +72,7 @@ public class MentorProfilesAdapter extends RecyclerView.Adapter<MentorProfilesAd
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tvName);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvDescription = itemView.findViewById(R.id.tvUserDescription);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

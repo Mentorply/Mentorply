@@ -37,7 +37,7 @@ android:layout_height="match_parent">
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tvDescription"
+        android:id="@+id/tvUserDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -61,6 +61,12 @@ android:layout_height="match_parent">
         android:text="Latest: Program reviews are out!"
         android:textSize="14sp"
         tools:text="Latest: Program reviews are out!" />
+
+    <Button
+        android:id="@+id/btnPairings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="To Pairing!!" />
 
 
 </LinearLayout>

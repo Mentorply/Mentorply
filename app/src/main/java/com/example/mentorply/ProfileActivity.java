@@ -7,8 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.mentorply.models.Program;
-import com.parse.Parse;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
@@ -27,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         ivProfileImage = findViewById(R.id.ivProfileImage);
         tvName = findViewById(R.id.tvName);
-        tvDescription = findViewById(R.id.tvDescription);
+        tvDescription = findViewById(R.id.tvUserDescription);
 
 
         user = Parcels.unwrap(getIntent().getParcelableExtra(ParseUser.class.getSimpleName()));

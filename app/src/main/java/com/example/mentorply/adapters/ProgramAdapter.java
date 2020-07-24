@@ -2,26 +2,20 @@ package com.example.mentorply.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 //import org.parceler.Parcels;
 import com.bumptech.glide.Glide;
-import com.example.mentorply.CreateProgramActivity;
 import com.example.mentorply.DetailedProgramsActivity;
 import com.example.mentorply.R;
-import com.example.mentorply.fragments.ProgramsFragment;
 import com.example.mentorply.models.Program;
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.SaveCallback;
 
 //import org.parceler.Parcels;
 
@@ -80,7 +74,7 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvDescription = itemView.findViewById(R.id.tvUserDescription);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
