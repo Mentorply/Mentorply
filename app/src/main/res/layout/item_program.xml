@@ -40,7 +40,7 @@
         android:text="UPE MentorFIU" />
 
     <TextView
-        android:id="@+id/tvStatus"
+        android:id="@+id/tvRole"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

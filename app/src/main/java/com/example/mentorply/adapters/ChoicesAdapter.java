@@ -94,7 +94,7 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
             }
             Glide.with(context)
                     .load(user.getParseFile("profilePicture"))
-                    .transform(new CircleCrop())
+                    //.transform(new CircleCrop())
                     .into(ivProfileImage);
             //If there's an image
            /* if (user.userImageUrls.size() > 0) {

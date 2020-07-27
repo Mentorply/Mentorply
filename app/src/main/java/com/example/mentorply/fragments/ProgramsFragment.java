@@ -29,6 +29,7 @@ import com.example.mentorply.OnboardingActivity;
 import com.example.mentorply.ProgramCodeActivity;
 import com.example.mentorply.R;
 import com.example.mentorply.adapters.ProgramAdapter;
+import com.example.mentorply.models.Affiliation;
 import com.example.mentorply.models.Program;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -102,7 +103,6 @@ public class ProgramsFragment extends Fragment {
         rvPrograms.setLayoutManager(new LinearLayoutManager(getContext()));
         queryPrograms();
 
-
     }
 
     public void populateHomePrograms() {
@@ -115,12 +115,34 @@ public class ProgramsFragment extends Fragment {
 
     protected void queryPrograms() {
 ///*
-        ParseQuery<Program> directorQuery = ParseQuery.getQuery(Program.class);
-        directorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        directorQuery.include(Program.KEY_NAME);
-        directorQuery.whereEqualTo("programDirector", ParseUser.getCurrentUser());
-//*/
 
+        ParseQuery<Affiliation> programsQuery = ParseQuery.getQuery(Affiliation.class);
+        programsQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        //programsQuery.include(Program.KEY_NAME);
+        programsQuery.whereEqualTo("participant", ParseUser.getCurrentUser());
+//*/
+        programsQuery.findInBackground(new FindCallback<Affiliation>() {
+            List <Program> programs = new ArrayList<Program>();
+            @Override
+            public void done(List<Affiliation> affiliations, ParseException e) {
+                if (e!=null){
+                    Log.e(TAG, "Issue with getting programs", e);
+                    return;
+                }
+                for (Affiliation affiliation: affiliations){
+                    Program program = affiliation.getProgram();
+                    program.saveInBackground();
+                    programs.add(program);
+                    try {
+                        Log.i(TAG, "Program: "+program.fetchIfNeeded().getString("name")+", Description: "+program.getDescription());
+                    } catch (ParseException ex) {
+                        ex.printStackTrace();
+                    }
+                }//+program.getObjectId()
+                allPrograms.addAll(programs);
+                adapter.notifyDataSetChanged();
+            }
+        });
 /*
         ParseQuery<Program> mentorQuery = ParseQuery.getQuery(Program.class);
         mentorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
@@ -159,21 +181,7 @@ public class ProgramsFragment extends Fragment {
         //directorQuery.include(Program.KEY_NAME);
         //mainQuery.whereEqualTo("programDirector", ParseUser.getCurrentUser());
 //*/
-        directorQuery.findInBackground(new FindCallback<Program>() {
-            @Override
-            public void done(List<Program> programs, ParseException e) {
-                if (e!=null){
-                    Log.e(TAG, "Issue with getting programs", e);
-                    return;
-                }
-                for (Program program: programs){
-                    program.saveInBackground();
-                    Log.i(TAG, "Program: "+program.getName()+", Description: "+program.getDescription()+ ", Program Director: "+program.getDirector());
-                }//+program.getObjectId()
-                allPrograms.addAll(programs);
-                adapter.notifyDataSetChanged();
-            }
-        });
+
     }
 
     @Override

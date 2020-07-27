@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.mentorply.models.Affiliation;
 import com.example.mentorply.models.Program;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -56,7 +57,7 @@ public class CreateProgramActivity extends AppCompatActivity {
         Program program = new Program();
         program.setName(programName);
         program.setDescription(description);
-        program.setDirector(ParseUser.getCurrentUser());
+       // program.setDirector(ParseUser.getCurrentUser());
         program.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -69,5 +70,11 @@ public class CreateProgramActivity extends AppCompatActivity {
                 etDescription.setText("");
             }
         });
+        Affiliation af = new Affiliation();
+        af.setRole("director");
+        af.setProgram(program);
+        af.setParticipant(currentUser);
+        program.addAffiliation(af);
+        program.saveInBackground();
     }
 }

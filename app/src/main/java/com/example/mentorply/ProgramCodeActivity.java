@@ -10,14 +10,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.mentorply.models.Affiliation;
 import com.example.mentorply.models.Program;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProgramCodeActivity extends AppCompatActivity {
@@ -64,17 +68,26 @@ public class ProgramCodeActivity extends AppCompatActivity {
                 {
                     //object exists
                     Toast.makeText(ProgramCodeActivity.this, "Program Name: "+program.getName(), Toast.LENGTH_SHORT).show();
-                    if (!toggleButtonState) {
+                    if (!toggleButtonState) { //mentee
                         //if (seeIfUserIsInProgram(ParseUser.getCurrentUser(), program)){
-                        program.addMentee(ParseUser.getCurrentUser());
-                        program.removeMentor(ParseUser.getCurrentUser());
+                        Affiliation affiliation = new Affiliation();
+                        affiliation.setParticipant(ParseUser.getCurrentUser());
+                        affiliation.setProgram(program);
+                        affiliation.setRole("mentee");
+                        program.addAffiliation(affiliation);
+                        //program.removeMentor(ParseUser.getCurrentUser());
                         program.saveInBackground();
                         //}
                     }
-                    else{
-                       // if (seeIfUserIsInProgram(ParseUser.getCurrentUser(), program)){
-                            program.addMentor(ParseUser.getCurrentUser());
-                            program.removeMentee(ParseUser.getCurrentUser());
+                    else{//mentor
+                        Affiliation affiliation = new Affiliation();
+                        affiliation.setParticipant(ParseUser.getCurrentUser());
+                        affiliation.setProgram(program);
+                        affiliation.setRole("mentor");
+                        program.addAffiliation(affiliation);
+                        // if (seeIfUserIsInProgram(ParseUser.getCurrentUser(), program)){
+                            //program.addMentor(ParseUser.getCurrentUser());
+                            //program.removeMentee(ParseUser.getCurrentUser());
                             program.saveInBackground();
                        //}
                     }
@@ -95,26 +108,27 @@ public class ProgramCodeActivity extends AppCompatActivity {
         });
 
     }
-
+/*
     private boolean seeIfUserIsInProgram(ParseUser currentUser, Program program) {
-        List<ParseUser> mentees = program.getMentees();
-        int i = 0;
-        //ParseUser mentee = null;
-        while(i<mentees.size()){
-            if (mentees.get(i).equals(currentUser)){
-                return true;
+        ArrayList<Affiliation> ar =  program.getAffiliations();
+        //ar.remove
+        programsQuery.findInBackground(new FindCallback<Affiliation>() {
+            List <Program> programs = new ArrayList<Program>();
+            @Override
+            public void done(List<Affiliation> affiliations, ParseException e) {
+                if (e!=null){
+                    Log.e(TAG, "Issue with getting programs", e);
+                    return;
+                }
+                for (Affiliation affiliation: affiliations){
+                    Program program = affiliation.getProgram();
+                    program.saveInBackground();
+                    Log.i(TAG, "Program: "+program.getName()+", Description: "+program.getDescription());
+                }//+program.getObjectId()
+                allPrograms.addAll(programs);
+                adapter.notifyDataSetChanged();
             }
-            i++;
-        }
-        i=0;
-        List<ParseUser> mentors = program.getMentors();
-        while(i<mentors.size()){
-            if (mentors.get(i).equals(currentUser)){
-                return true;
-            }
-            i++;
-        }
-        return false;
+        });
     }
-
+//*/
 }

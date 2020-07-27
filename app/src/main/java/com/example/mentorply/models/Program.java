@@ -17,10 +17,12 @@ public class Program extends ParseObject{
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_PROGRAM_PICTURE= "programPicture";
-    public static final String KEY_MENTORS = "mentors";
-    public static final String KEY_MENTEES = "mentees";
-    public static final String KEY_DIRECTOR = "programDirector";
-    HashSet <ParseUser> mentorSet = new HashSet<>();
+    public static final String KEY_AFFILIATIONS = "affiliations";
+
+    //public static final String KEY_MENTORS = "mentors";
+    //public static final String KEY_MENTEES = "mentees";
+    //public static final String KEY_DIRECTOR = "programDirector";
+    //HashSet <ParseUser> mentorSet = new HashSet<>();
 
     public String getName(){ return getString(KEY_NAME); }
     public void setName(String name){
@@ -37,7 +39,10 @@ public class Program extends ParseObject{
         put(KEY_PROGRAM_PICTURE, parseFile);
     }
 
-    public ArrayList getMentors(){ return (ArrayList <ParseUser>) get(KEY_MENTORS); }
+    public ArrayList getAffiliations(){ return (ArrayList <Affiliation>) get(KEY_AFFILIATIONS); }
+    public void addAffiliation(Affiliation affiliation){ addUnique(KEY_AFFILIATIONS, affiliation); }
+
+    /*public ArrayList getMentors(){ return (ArrayList <ParseUser>) get(KEY_MENTORS); }
     public void addMentor(ParseUser user){ addUnique(KEY_MENTORS, user); }
     public void removeMentor(ParseUser user){
         ArrayList <ParseUser> list = new ArrayList<>();
@@ -46,8 +51,8 @@ public class Program extends ParseObject{
     }
 
 
-    public List getMentees(){return (ArrayList <ParseUser>) get(KEY_MENTEES);}
-    public void addMentee(ParseUser user){ addUnique(KEY_MENTEES, user); }
+    //public List getMentees(){return (ArrayList <ParseUser>) get(KEY_MENTEES);}
+    //public void addMentee(ParseUser user){ addUnique(KEY_MENTEES, user); }
     public void removeMentee(ParseUser user){
         ArrayList <ParseUser> list = new ArrayList<>();
         list.add(user);
@@ -62,6 +67,6 @@ public class Program extends ParseObject{
         put(KEY_DIRECTOR, user);
     }
 
-
+*/
 }
 //classes/Program

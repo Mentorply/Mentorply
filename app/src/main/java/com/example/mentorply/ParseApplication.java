@@ -2,6 +2,7 @@ package com.example.mentorply;
 
 import android.app.Application;
 
+import com.example.mentorply.models.Affiliation;
 import com.example.mentorply.models.Program;
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -16,7 +17,7 @@ public class ParseApplication extends Application {
 
         // Register your parse models
         ParseObject.registerSubclass(Program.class);
-
+        ParseObject.registerSubclass(Affiliation.class);
         // Use for troubleshooting -- remove this line for production
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mentorply.DetailedProgramsActivity;
 import com.example.mentorply.R;
+import com.example.mentorply.models.Affiliation;
 import com.example.mentorply.models.Program;
 import com.parse.ParseFile;
 
@@ -21,6 +22,7 @@ import com.parse.ParseFile;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHolder> implements View.OnClickListener{
@@ -69,12 +71,14 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
         private TextView tvName;
         private ImageView ivProfileImage;
         private TextView tvDescription;
+        private TextView tvRole;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvDescription = itemView.findViewById(R.id.tvUserDescription);
+            tvRole = itemView.findViewById(R.id.tvRole);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
