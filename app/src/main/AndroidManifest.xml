@@ -14,6 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.codepath.fileprovider.Mentorply"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
+        </provider>
         <activity android:name=".PairingActivity"></activity>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".CreateProgramActivity" />
@@ -21,8 +30,7 @@
         <activity android:name=".DetailedProgramsActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".MainActivity" /> <!-- <activity android:name=".LoginActivity" /> -->
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".OnboardingActivity">
+        <activity android:name=".LoginActivity" >
 
             <!-- <activity android:name=".OnboardingActivity"> -->
             <intent-filter>

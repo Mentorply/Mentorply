@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -72,12 +73,15 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
         ImageView ivProfileImage;
         TextView tvUserDescription;
         TextView tvName;
+        Button messageButton;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvUserDescription = itemView.findViewById(R.id.tvUserDescription);
             tvName = itemView.findViewById(R.id.tvName);
+            messageButton = itemView.findViewById(R.id.message_button);
             itemView.setOnClickListener(this);
         }
 

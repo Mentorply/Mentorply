@@ -49,6 +49,7 @@ public class CreateProgramActivity extends AppCompatActivity {
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 createProgram(programName, description, currentUser);
+                //program.saveInBackground();
             }
         });
     }
@@ -57,7 +58,14 @@ public class CreateProgramActivity extends AppCompatActivity {
         Program program = new Program();
         program.setName(programName);
         program.setDescription(description);
-       // program.setDirector(ParseUser.getCurrentUser());
+        Affiliation af = new Affiliation();
+        af.setRole("director");
+        af.setProgram(program);
+        af.setParticipant(currentUser);
+        af.saveInBackground();
+        program.addAffiliation(af);
+
+        // program.setDirector(ParseUser.getCurrentUser());
         program.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -70,11 +78,5 @@ public class CreateProgramActivity extends AppCompatActivity {
                 etDescription.setText("");
             }
         });
-        Affiliation af = new Affiliation();
-        af.setRole("director");
-        af.setProgram(program);
-        af.setParticipant(currentUser);
-        program.addAffiliation(af);
-        program.saveInBackground();
     }
 }

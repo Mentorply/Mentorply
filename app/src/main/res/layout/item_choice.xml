@@ -12,42 +12,45 @@
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="-1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
 
     <TextView
         android:id="@+id/tvUserDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvName"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="2dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="1dp"
         android:layout_toEndOf="@+id/ivProfileImage"
-        android:text="This is a lovely program! This is MentorFIU!!" />
-
+        android:text="Tags" />
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/ivProfileImage"
-        android:text="UPE MentorFIU" />
+        android:text="Azhar Ali" />
 
-    <TextView
-        android:id="@+id/tvPosition"
+    <Button
+        android:id="@+id/message_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="18dp"
-        android:text="192"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="10sp" />
 
 </RelativeLayout>
