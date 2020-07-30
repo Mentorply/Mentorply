@@ -37,6 +37,12 @@
         android:layout_height="wrap_content"
         android:text="Take Picture" />
 
+    <Button
+        android:id="@+id/btnSelectImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select image from camera roll" />
+
     <ImageView
         android:id="@+id/ivPostImage"
         android:layout_width="match_parent"

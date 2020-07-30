@@ -7,8 +7,10 @@ import androidx.core.content.FileProvider;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -26,18 +28,28 @@ import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import static java.security.AccessController.getContext;
 
 public class SignupActivity extends AppCompatActivity {
 
-    public static final String TAG = "LoginActivity";
+    public static final String TAG = "SignupActivity";
+
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
+    public final static int PICK_PHOTO_CODE = 1046;
     private EditText etUsername;
     private EditText etPassword;
     private Button btnBackToLogin;
     //adding new stuff
     private Button btnSignup;
+
     private Button btnCaptureImage;
     private ImageView ivPostImage;
-    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
+
+    private Button btnSelectImage;
+
     private File photoFile;
     public String photoFileName = "photo.jpg";
     //public Bitmap finalImage;
@@ -54,6 +66,7 @@ public class SignupActivity extends AppCompatActivity {
         btnSignup = findViewById(R.id.btnSignup);
         btnCaptureImage = findViewById(R.id.btnCaptureImage);
         ivPostImage = findViewById(R.id.ivPostImage);
+        btnSelectImage = findViewById(R.id.btnSelectImage);
 
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,14 +75,26 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        btnSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onPickPhoto(view);
+            }
+        });
+
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Log.i(TAG, "onclick signup button");
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 //loginUser(username,password);
+                if (photoFile == null) {
+                    Log.e(TAG, "Attempt to post invalid image");
+                    return;
+                }
                 final ParseFile photo = new ParseFile(photoFile);
                 photo.saveInBackground(new SaveCallback() {
                     public void done(ParseException e) {
@@ -80,18 +105,75 @@ public class SignupActivity extends AppCompatActivity {
                 });
             }
         });
-
         btnBackToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "onclick back to login button");
                 Intent i = new Intent(SignupActivity.this, LoginActivity.class);
                 startActivity(i);
+            }
+        });
+    }
+    private void signupUser(ParseFile photo) {
+        // Create the ParseUser
+        ParseUser user = new ParseUser();
+        // Set core properties
+        String username = etUsername.getText().toString();
+        String password = etPassword.getText().toString();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.put("profilePicture",photo);
 
+        // Invoke signUpInBackground
+        user.signUpInBackground(new SignUpCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    // Hooray! Let them use the app now.
+                    Intent i = new Intent(SignupActivity.this, MainActivity.class);
+                    startActivity(i);
+                    Toast.makeText(SignupActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    etUsername.setText("");
+                    etPassword.setText("");
+                    ivPostImage.setImageResource(0);
+                } else {
+                    // Sign up didn't succeed. Look at the ParseException
+                    // to figure out what went wrong
+                    Toast.makeText(SignupActivity.this, "Issue with signup", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Issue with signup", e);
+                    return;
+
+                }
             }
         });
 
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE ) {
+            if (resultCode == RESULT_OK) {
+                // by this point we have the camera photo on disk
+                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                // RESIZE BITMAP, see section below
+                // Load the taken image into a preview
+                ivPostImage.setImageBitmap(takenImage);
+            } else { // Result was a failure
+                Toast.makeText(getApplicationContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if ((data != null) && requestCode == PICK_PHOTO_CODE) {
+            Uri photoUri = data.getData();
+
+            // Load the image located at photoUri into selectedImage
+            Bitmap selectedImage = loadFromUri(photoUri);
+            // Load the selected image into a preview
+            ivPostImage.setImageBitmap(selectedImage);
+
+        }
+    }
+    //getting profile image from camera methods
+
+
 
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application
@@ -133,55 +215,38 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    private void signupUser(ParseFile photo) {
-        // Create the ParseUser
-        ParseUser user = new ParseUser();
-        // Set core properties
-        String username = etUsername.getText().toString();
-        String password = etPassword.getText().toString();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.put("profilePicture",photo);
 
-        // Invoke signUpInBackground
-        user.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    // Hooray! Let them use the app now.
-                    Intent i = new Intent(SignupActivity.this, MainActivity.class);
-                    startActivity(i);
-                    Toast.makeText(SignupActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                    etUsername.setText("");
-                    etPassword.setText("");
-                    ivPostImage.setImageResource(0);
-                } else {
-                    // Sign up didn't succeed. Look at the ParseException
-                    // to figure out what went wrong
-                    Toast.makeText(SignupActivity.this, "Issue with signup", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Issue with signup", e);
-                    return;
 
-                }
-            }
-        });
+    // Trigger gallery selection for a photo
+    public void onPickPhoto(View view) {
+        // Create intent for picking a photo from the gallery
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            // Bring up gallery to select a photo
+            startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                // by this point we have the camera photo on disk
-                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                // RESIZE BITMAP, see section below
-                // Load the taken image into a preview
-                ivPostImage.setImageBitmap(takenImage);
-            } else { // Result was a failure
-                Toast.makeText(getApplicationContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+    public Bitmap loadFromUri(Uri photoUri) {
+        Bitmap bitmap = null;
+        try {
+            // check version of Android on device
+            if(Build.VERSION.SDK_INT > 27){
+                // on newer versions of Android, use the new decodeBitmap method
+                ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), photoUri);
+                bitmap = ImageDecoder.decodeBitmap(source);
+            } else {
+                // support older versions of Android by using getBitmap
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
+        return bitmap;
     }
 
 }

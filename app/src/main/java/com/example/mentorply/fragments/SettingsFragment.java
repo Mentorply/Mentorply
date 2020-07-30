@@ -2,13 +2,24 @@ package com.example.mentorply.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.mentorply.R;
+import com.example.mentorply.adapters.ProgramAdapter;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +59,30 @@ public class SettingsFragment extends Fragment {
         return fragment;
     }
 
+    ImageView ivProfileImage;
+    TextView tvName;
+    TextView tvDescription;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //setHasOptionsMenu(true);
+
+        ivProfileImage = view.findViewById(R.id.ivProfileImage);
+        tvName = view.findViewById(R.id.tvName);
+        tvDescription = view.findViewById(R.id.tvUserDescription);
+
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        tvName.setText(currentUser.getString("username"));
+        tvDescription.setText(currentUser.getString("description"));
+        if (currentUser.getParseFile("profilePicture")!=null){
+            Glide.with(this).load(currentUser.getParseFile("profilePicture").getUrl()).into(ivProfileImage);
+        }
+
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +96,6 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return inflater.inflate(R.layout.activity_profile, container, false);
     }
 }
