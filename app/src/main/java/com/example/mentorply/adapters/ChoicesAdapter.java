@@ -98,11 +98,11 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            try {
-                tvUserDescription.setText(user.fetchIfNeeded().getString("description"));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                //tvUserDescription.setText(user.fetchIfNeeded().getString("description"));
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
             Glide.with(context)
                     .load(user.getParseFile("profilePicture"))
                     //.transform(new CircleCrop())

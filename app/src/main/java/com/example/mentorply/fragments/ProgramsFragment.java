@@ -89,7 +89,7 @@ public class ProgramsFragment extends Fragment {
         //4. set the layout manager on the recycler view
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), GridLayoutManager.VERTICAL);
         rvPrograms.setLayoutManager(gridLayoutManager);
-        rvPrograms.addItemDecoration(new SpacesItemDecoration(DividerItemDecoration.VERTICAL));
+        //rvPrograms.addItemDecoration(new SpacesItemDecoration(DividerItemDecoration.VERTICAL));
         queryPrograms();
 
     }
