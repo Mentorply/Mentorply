@@ -1,7 +1,9 @@
 package com.example.mentorply.models;
 
+import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+@ParseClassName("Tag")
 public class Tag extends ParseObject {
     public Tag(){}
     public static final String KEY_NAME = "name";

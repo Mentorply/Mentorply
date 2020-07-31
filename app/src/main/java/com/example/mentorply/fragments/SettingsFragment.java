@@ -8,18 +8,25 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mentorply.R;
 import com.example.mentorply.adapters.ProgramAdapter;
+import com.example.mentorply.models.Tag;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,6 +69,7 @@ public class SettingsFragment extends Fragment {
     ImageView ivProfileImage;
     TextView tvName;
     TextView tvDescription;
+    ChipGroup chipsPrograms;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -71,7 +79,7 @@ public class SettingsFragment extends Fragment {
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         tvName = view.findViewById(R.id.tvName);
         tvDescription = view.findViewById(R.id.tvUserDescription);
-
+        chipsPrograms = view.findViewById(R.id.chipsPrograms);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         tvName.setText(currentUser.getString("username"));
@@ -79,6 +87,8 @@ public class SettingsFragment extends Fragment {
         if (currentUser.getParseFile("profilePicture")!=null){
             Glide.with(this).load(currentUser.getParseFile("profilePicture").getUrl()).into(ivProfileImage);
         }
+        List <Tag> tags = currentUser.getList("tags");
+        setCategoryChips(tags);
 
     }
 
@@ -98,4 +108,28 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_profile, container, false);
     }
+
+    public void setCategoryChips(List<Tag> tags) {
+        for (Tag tag : tags) {
+            Chip mChip = (Chip) this.getLayoutInflater().inflate(R.layout.layout_chip_choice, null, false);
+            try {
+                mChip.setText(tag.fetchIfNeeded().getString("name"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            int paddingDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 10,
+                    getResources().getDisplayMetrics()
+            );
+            mChip.setPadding(paddingDp, 0, paddingDp, 0);
+            mChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                }
+            });
+            chipsPrograms.addView(mChip);
+        }
+    }
+
 }
