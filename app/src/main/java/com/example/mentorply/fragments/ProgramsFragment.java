@@ -51,12 +51,6 @@ public class ProgramsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_programs, container, false);
     }
-    public void onCreate(Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        super.onCreate(savedInstanceState);
-
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -133,45 +127,6 @@ public class ProgramsFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-/*
-        ParseQuery<Program> mentorQuery = ParseQuery.getQuery(Program.class);
-        mentorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        mentorQuery.include(Program.KEY_NAME);
-        ArrayList<ParseUser> mentor = new ArrayList<>();
-        mentor.add(ParseUser.getCurrentUser());
-        mentorQuery.whereContainedIn("mentor", mentor);
-*/
-///* where={"objectId":"zpngPUMcHG"}
-/*
-        ParseQuery<Program> menteeQuery = ParseQuery.getQuery(Program.class);
-        menteeQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        menteeQuery.include(Program.KEY_NAME);
-        ArrayList<ParseUser> mentee = new ArrayList<>();
-        mentee.add(ParseUser.getCurrentUser());
-        menteeQuery.whereContainsAll("mentee", mentee);
-*/
-       /* ParseQuery<Program> mentorQuery = ParseQuery.getQuery(Program.class);
-        mentorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        mentorQuery.include(Program.KEY_NAME);
-        ArrayList<ParseUser> mentor = new ArrayList<ParseUser>();
-        mentor.add(ParseUser.getCurrentUser());
-        mentorQuery.whereContainsAll("mentor", mentor);
-
-
-        List<ParseQuery<Program>> queries = new ArrayList<ParseQuery<Program>>();
-        queries.add(directorQuery);
-        queries.add(menteeQuery);
-        queries.add(mentorQuery);
-
-        ParseQuery<Program> mainQuery = ParseQuery.or(queries);
-*/
-        //mainQuery.addDescendingOrder(Program.KEY_NAME);
-        //ParseQuery<Program> directorQuery = ParseQuery.getQuery(Program.class);
-        //directorQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        //directorQuery.include(Program.KEY_NAME);
-        //mainQuery.whereEqualTo("programDirector", ParseUser.getCurrentUser());
-//*/
-
     }
 
     @Override
