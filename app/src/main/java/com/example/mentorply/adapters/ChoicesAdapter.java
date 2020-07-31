@@ -16,7 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 //import org.parceler.Parcels;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mentorply.ProfileActivity;
 import com.example.mentorply.R;
 import com.example.mentorply.models.Tag;
@@ -103,10 +105,11 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
 //            } catch (ParseException e) {
 //                e.printStackTrace();
 //            }
-            Glide.with(context)
-                    .load(user.getParseFile("profilePicture"))
-                    //.transform(new CircleCrop())
-                    .into(ivProfileImage);
+//            Glide.with(context)
+//                    .load(user.getParseFile("profilePicture"))
+//                    //.transform(new CircleCrop())
+//                    //.apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
+//                    .into(ivProfileImage);
         }
 //        public void setCategoryChips(List<Tag> tags) {
 //            for (Tag tag : tags) {
