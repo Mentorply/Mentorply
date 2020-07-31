@@ -3,10 +3,12 @@ package com.example.mentorply.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.mentorply.ProfileActivity;
 import com.example.mentorply.R;
+import com.example.mentorply.models.Tag;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -74,6 +79,7 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
         TextView tvUserDescription;
         TextView tvName;
         Button messageButton;
+        ChipGroup chipsUser;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -82,6 +88,7 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
             tvUserDescription = itemView.findViewById(R.id.tvUserDescription);
             tvName = itemView.findViewById(R.id.tvName);
             messageButton = itemView.findViewById(R.id.message_button);
+            chipsUser = itemView.findViewById(R.id.chipsUser);
             itemView.setOnClickListener(this);
         }
 
@@ -100,7 +107,50 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
                     .load(user.getParseFile("profilePicture"))
                     //.transform(new CircleCrop())
                     .into(ivProfileImage);
-            //If there's an image
+        }
+//        public void setCategoryChips(List<Tag> tags) {
+//            for (Tag tag : tags) {
+//                Chip mChip = (Chip) itemView.getLayoutInflater().inflate(R.layout.layout_chip_action, null, false);
+//                try {
+//                    mChip.setText(tag.fetchIfNeeded().getString("name"));
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                int paddingDp = (int) TypedValue.applyDimension(
+//                        TypedValue.COMPLEX_UNIT_DIP, 10,
+//                        getResources().getDisplayMetrics()
+//                );
+//                mChip.setPadding(paddingDp, 0, paddingDp, 0);
+//                mChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//
+//                    }
+//                });
+//                chipsUser.addView(mChip);
+//            }
+//        }
+        @Override
+        public void onClick(View view) {
+            // gets item position
+            int position = getAdapterPosition();
+            // make sure the position is valid, i.e. actually exists in the view
+            if (position != RecyclerView.NO_POSITION) {
+                // get the movie at the position, this won't work if the class is static
+                ParseUser user = users.get(position);
+                // create intent for the new activity
+                Intent intent = new Intent(context, ProfileActivity.class);
+                // serialize the movie using parceler, use its short name as a key
+                intent.putExtra(ParseUser.class.getSimpleName(), Parcels.wrap(user));
+                // show the activity
+                context.startActivity(intent);
+
+            }
+        }
+    }
+}
+
+//If there's an image
            /* if (user.userImageUrls.size() > 0) {
                 //Set media
                 Glide.with(context)
@@ -125,26 +175,3 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
                 Glide.with(context).load(user.userImageUrl).into(ivParseUserImage);
             }
 */
-        }
-
-
-        @Override
-        public void onClick(View view) {
-            // gets item position
-            int position = getAdapterPosition();
-            // make sure the position is valid, i.e. actually exists in the view
-            if (position != RecyclerView.NO_POSITION) {
-                // get the movie at the position, this won't work if the class is static
-                ParseUser user = users.get(position);
-                // create intent for the new activity
-                Intent intent = new Intent(context, ProfileActivity.class);
-                // serialize the movie using parceler, use its short name as a key
-                intent.putExtra(ParseUser.class.getSimpleName(), Parcels.wrap(user));
-                // show the activity
-                context.startActivity(intent);
-
-            }
-        }
-    }
-}
-

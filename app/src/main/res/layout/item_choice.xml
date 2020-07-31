@@ -20,17 +20,6 @@
 
 
     <TextView
-        android:id="@+id/tvUserDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvName"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="1dp"
-        android:layout_toEndOf="@+id/ivProfileImage"
-        android:text="Tags" />
-
-    <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,6 +28,21 @@
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="Azhar Ali" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipsUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvName"
+        android:layout_marginStart="-70dp"
+        android:layout_marginEnd="-96dp"
+        android:layout_toStartOf="@+id/message_button"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        app:chipSpacing="8dp"
+        app:singleSelection="false">
+
+    </com.google.android.material.chip.ChipGroup>
+
 
     <Button
         android:id="@+id/message_button"

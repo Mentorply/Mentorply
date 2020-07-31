@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import com.example.mentorply.CreateProgramActivity;
 import com.example.mentorply.ProgramCodeActivity;
 import com.example.mentorply.R;
+import com.example.mentorply.SpacesItemDecoration;
 import com.example.mentorply.adapters.ProgramAdapter;
 import com.example.mentorply.models.Affiliation;
 import com.example.mentorply.models.Program;
@@ -84,7 +87,9 @@ public class ProgramsFragment extends Fragment {
         //3. set the adapter on the recycler view
         rvPrograms.setAdapter(adapter);
         //4. set the layout manager on the recycler view
-        rvPrograms.setLayoutManager(new LinearLayoutManager(getContext()));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), GridLayoutManager.VERTICAL);
+        rvPrograms.setLayoutManager(gridLayoutManager);
+        rvPrograms.addItemDecoration(new SpacesItemDecoration(DividerItemDecoration.VERTICAL));
         queryPrograms();
 
     }

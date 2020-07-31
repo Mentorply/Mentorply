@@ -15,14 +15,21 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.mentorply.models.Tag;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
@@ -30,6 +37,7 @@ import com.parse.SignUpCallback;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import static java.security.AccessController.getContext;
 
@@ -41,6 +49,8 @@ public class SignupActivity extends AppCompatActivity {
     public final static int PICK_PHOTO_CODE = 1046;
     private EditText etUsername;
     private EditText etPassword;
+    private ChipGroup chipsCareers;
+    private ChipGroup chipsInterests;
     private Button btnBackToLogin;
     //adding new stuff
     private Button btnSignup;
@@ -68,6 +78,12 @@ public class SignupActivity extends AppCompatActivity {
         ivPostImage = findViewById(R.id.ivPostImage);
         btnSelectImage = findViewById(R.id.btnSelectImage);
 
+        chipsCareers = findViewById(R.id.chipsCareers);
+        chipsInterests = findViewById(R.id.chipsInterests);
+
+        setChipGroups("anime", chipsCareers);
+        setChipGroups("anime?", chipsInterests);
+
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +97,6 @@ public class SignupActivity extends AppCompatActivity {
                 onPickPhoto(view);
             }
         });
-
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +129,28 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setChipGroups(final String category, final ChipGroup cg) {
+        // Define the class we would like to query
+        final ParseQuery<Tag> query = ParseQuery.getQuery(Tag.class);
+        // Define our query conditions
+        query.whereEqualTo("category", category);
+        // Execute the find asynchronously
+        query.findInBackground(new FindCallback<Tag>() {
+            public void done(List<Tag> itemList, ParseException e) {
+                if (e == null) {
+                    // Access the array of results here
+                    //String firstItemId = itemList.get(0).getObjectId();
+                    //Toast.makeText(TodoItemsActivity.this, firstItemId, Toast.LENGTH_SHORT).show();
+                    setCategoryChips(itemList, cg);
+
+                } else {
+                    Log.d("item", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+
     private void signupUser(ParseFile photo) {
         // Create the ParseUser
         ParseUser user = new ParseUser();
@@ -122,6 +159,7 @@ public class SignupActivity extends AppCompatActivity {
         String password = etPassword.getText().toString();
         user.setUsername(username);
         user.setPassword(password);
+
         user.put("profilePicture",photo);
 
         // Invoke signUpInBackground
@@ -147,6 +185,28 @@ public class SignupActivity extends AppCompatActivity {
         });
 
     }
+    public void setCategoryChips(List<Tag> tags, ChipGroup cg) {
+        for (Tag tag : tags) {
+            Chip mChip = (Chip) this.getLayoutInflater().inflate(R.layout.layout_chip_filter, null, false);
+            try {
+                mChip.setText(tag.fetchIfNeeded().getString("name"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            int paddingDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 10,
+                    getResources().getDisplayMetrics()
+            );
+            mChip.setPadding(paddingDp, 0, paddingDp, 0);
+            mChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                }
+            });
+            cg.addView(mChip);
+        }
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -171,10 +231,8 @@ public class SignupActivity extends AppCompatActivity {
 
         }
     }
+
     //getting profile image from camera methods
-
-
-
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -213,9 +271,6 @@ public class SignupActivity extends AppCompatActivity {
 
         return file;
     }
-
-
-
 
     // Trigger gallery selection for a photo
     public void onPickPhoto(View view) {
