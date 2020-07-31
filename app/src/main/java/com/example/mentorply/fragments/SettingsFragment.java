@@ -92,7 +92,8 @@ public class SettingsFragment extends Fragment {
             Glide.with(this).load(currentUser.getParseFile("profilePicture").getUrl()).into(ivProfileImage);
         }
         List <Tag> tags = currentUser.getList("tags");
-        setCategoryChips(tags);
+        if (tags!=null)
+            setCategoryChips(tags);
 
     }
 

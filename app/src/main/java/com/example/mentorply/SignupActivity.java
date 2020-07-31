@@ -37,6 +37,7 @@ import com.parse.SignUpCallback;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.security.AccessController.getContext;
@@ -63,7 +64,7 @@ public class SignupActivity extends AppCompatActivity {
     private File photoFile;
     public String photoFileName = "photo.jpg";
     //public Bitmap finalImage;
-
+    private List <Tag> tags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,39 @@ public class SignupActivity extends AppCompatActivity {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 //loginUser(username,password);
+                tags = new ArrayList<Tag>();
+                for (int i=0; i<chipsCareers.getChildCount();i++){
+                    Chip chip = (Chip)chipsCareers.getChildAt(i);
+                    if (chip.isChecked()){
+                        final Tag tag = new Tag();
+                        tag.setName((String) chip.getText());
+                        tag.setCategory("anime");
+                        tag.saveInBackground(new SaveCallback() {
+                            public void done(ParseException e) {
+                                // If successful add file to user and signUpInBackground
+                                if(null == e)
+                                    tags.add(tag);
+                            }
+                        });
+
+
+                    }
+                }
+                for (int i=0; i<chipsInterests.getChildCount();i++){
+                    Chip chip = (Chip)chipsInterests.getChildAt(i);
+                    if (chip.isChecked()){
+                        final Tag tag = new Tag();
+                        tag.setName((String) chip.getText());
+                        tag.setCategory("anime?");
+                        tag.saveInBackground(new SaveCallback() {
+                            public void done(ParseException e) {
+                                // If successful add file to user and signUpInBackground
+                                if(null == e)
+                                    tags.add(tag);
+                            }
+                        });
+                    }
+                }
                 if (photoFile == null) {
                     Log.e(TAG, "Attempt to post invalid image");
                     return;
@@ -159,9 +193,8 @@ public class SignupActivity extends AppCompatActivity {
         String password = etPassword.getText().toString();
         user.setUsername(username);
         user.setPassword(password);
-
+        user.put("tags", tags);
         user.put("profilePicture",photo);
-
         // Invoke signUpInBackground
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
