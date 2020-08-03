@@ -17,12 +17,9 @@ public class Program extends ParseObject{
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_PROGRAM_PICTURE= "programPicture";
-    public static final String KEY_AFFILIATIONS = "affiliations";
+    public static final String KEY_MEMBERSHIPS = "memberships";
+    public static final String KEY_PAIRS = "pairs";
 
-    //public static final String KEY_MENTORS = "mentors";
-    //public static final String KEY_MENTEES = "mentees";
-    //public static final String KEY_DIRECTOR = "programDirector";
-    //HashSet <ParseUser> mentorSet = new HashSet<>();
 
     public String getName(){ return getString(KEY_NAME); }
     public void setName(String name){
@@ -39,34 +36,10 @@ public class Program extends ParseObject{
         put(KEY_PROGRAM_PICTURE, parseFile);
     }
 
-    public ArrayList getAffiliations(){ return (ArrayList <Affiliation>) get(KEY_AFFILIATIONS); }
-    public void addAffiliation(Affiliation affiliation){ addUnique(KEY_AFFILIATIONS, affiliation); }
+    public ArrayList getMemberships(){ return (ArrayList <Membership>) get(KEY_MEMBERSHIPS); }
+    public void addMembership(Membership membership){ addUnique(KEY_MEMBERSHIPS, membership); }
 
-    /*public ArrayList getMentors(){ return (ArrayList <ParseUser>) get(KEY_MENTORS); }
-    public void addMentor(ParseUser user){ addUnique(KEY_MENTORS, user); }
-    public void removeMentor(ParseUser user){
-        ArrayList <ParseUser> list = new ArrayList<>();
-        list.add(user);
-        removeAll(KEY_MENTORS, list);
-    }
+    public ArrayList getPairs(){ return (ArrayList <Pair>) get(KEY_PAIRS); }
+    public void addPair(Pair pair){ addUnique(KEY_PAIRS, pair); }
 
-
-    //public List getMentees(){return (ArrayList <ParseUser>) get(KEY_MENTEES);}
-    //public void addMentee(ParseUser user){ addUnique(KEY_MENTEES, user); }
-    public void removeMentee(ParseUser user){
-        ArrayList <ParseUser> list = new ArrayList<>();
-        list.add(user);
-        removeAll(KEY_MENTEES, list);
-    }
-
-
-    public ParseUser getDirector(){
-        return getParseUser(KEY_DIRECTOR);
-    }
-    public void setDirector(ParseUser user){
-        put(KEY_DIRECTOR, user);
-    }
-
-*/
 }
-//classes/Program

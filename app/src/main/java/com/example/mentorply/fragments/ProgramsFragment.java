@@ -6,9 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -22,11 +20,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mentorply.CreateProgramActivity;
-import com.example.mentorply.ProgramCodeActivity;
+import com.example.mentorply.JoinProgramActivity;
 import com.example.mentorply.R;
-import com.example.mentorply.SpacesItemDecoration;
 import com.example.mentorply.adapters.ProgramAdapter;
-import com.example.mentorply.models.Affiliation;
+import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Program;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -105,21 +102,21 @@ public class ProgramsFragment extends Fragment {
     protected void queryPrograms() {
 ///*
 
-        ParseQuery<Affiliation> programsQuery = ParseQuery.getQuery(Affiliation.class);
+        ParseQuery<Membership> programsQuery = ParseQuery.getQuery(Membership.class);
         programsQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         //programsQuery.include(Program.KEY_NAME);
         programsQuery.whereEqualTo("participant", ParseUser.getCurrentUser());
 //*/
-        programsQuery.findInBackground(new FindCallback<Affiliation>() {
+        programsQuery.findInBackground(new FindCallback<Membership>() {
             List <Program> programs = new ArrayList<Program>();
             @Override
-            public void done(List<Affiliation> affiliations, ParseException e) {
+            public void done(List<Membership> memberships, ParseException e) {
                 if (e!=null){
                     Log.e(TAG, "Issue with getting programs", e);
                     return;
                 }
-                for (Affiliation affiliation: affiliations){
-                    Program program = affiliation.getProgram();
+                for (Membership membership: memberships){
+                    Program program = membership.getProgram();
                     program.saveInBackground();
                     programs.add(program);
                     try {
@@ -149,7 +146,7 @@ public class ProgramsFragment extends Fragment {
                 Toast.makeText(getActivity(), "Create", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_add:
-                Intent j = new Intent(getContext(), ProgramCodeActivity.class);
+                Intent j = new Intent(getContext(), JoinProgramActivity.class);
                 startActivity(j);
                 //finish();
                 Toast.makeText(getActivity(), "Add by Code", Toast.LENGTH_SHORT).show();

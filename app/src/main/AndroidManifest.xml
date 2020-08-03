@@ -28,9 +28,9 @@
         </provider>
 
         <activity android:name=".PairingActivity" />
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".ChoiceProfileActivity" />
         <activity android:name=".CreateProgramActivity" />
-        <activity android:name=".ProgramCodeActivity" />
+        <activity android:name=".JoinProgramActivity" />
         <activity android:name=".DetailedProgramsActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".MainActivity" /> <!-- <activity android:name=".LoginActivity" /> -->

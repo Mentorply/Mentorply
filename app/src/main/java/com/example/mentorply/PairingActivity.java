@@ -13,10 +13,11 @@ import android.view.MenuItem;
 import androidx.appcompat.widget.SearchView;
 
 import com.example.mentorply.adapters.ChoicesAdapter;
-import com.example.mentorply.models.Affiliation;
+import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Program;
 import com.example.mentorply.models.User;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -58,26 +59,44 @@ public class PairingActivity extends AppCompatActivity {
     }
 
    protected void queryParseUsers() {
-       ParseQuery<Affiliation> menteesQuery = ParseQuery.getQuery(Affiliation.class);
-       menteesQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+       final ParseQuery<Membership> query = ParseQuery.getQuery(Membership.class);
+       query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
        //programsQuery.include(Program.KEY_NAME);
-       menteesQuery.whereEqualTo("program", program);
-       menteesQuery.whereEqualTo("role", "mentee");
+       query.whereEqualTo("program", program);
+
+
+       ParseQuery<Membership> subQuery = ParseQuery.getQuery("Membership");
+       subQuery.whereEqualTo("participant", ParseUser.getCurrentUser());
+       subQuery.getFirstInBackground(new GetCallback<Membership>() {
+           public void done(Membership object, ParseException e) {
+               if (object == null) {
+                   Log.d("score", "The getFirst request failed.");
+               } else {
+                   Log.d("score", "Retrieved the object.");
+                   if (object.getRole().equals("mentee"))
+                       query.whereEqualTo("role", "mentor");
+                   else
+                       query.whereEqualTo("role", "mentee");
+               }
+           }
+       });
+
+
 //*/
-       menteesQuery.findInBackground(new FindCallback<Affiliation>() {
-           List <ParseUser> mentees = new ArrayList<ParseUser>();
+       query.findInBackground(new FindCallback<Membership>() {
+           List <ParseUser> participants = new ArrayList<ParseUser>();
            @Override
-           public void done(List<Affiliation> affiliations, ParseException e) {
+           public void done(List<Membership> memberships, ParseException e) {
                if (e!=null){
                    Log.e(TAG, "Issue with getting programs", e);
                    return;
                }
-               for (Affiliation affiliation: affiliations){
-                   ParseUser mentee = affiliation.getParticipant();
-                   mentee.saveInBackground();
-                   mentees.add(mentee);
+               for (Membership membership: memberships){
+                   ParseUser participant = membership.getParticipant();
+                   participant.saveInBackground();
+                   participants.add(participant);
                }//+program.getObjectId()
-               users.addAll(mentees);
+               users.addAll(participants);
                adapter.notifyDataSetChanged();
            }
        });
@@ -102,6 +121,7 @@ public class PairingActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
                 return false;
             }
         });

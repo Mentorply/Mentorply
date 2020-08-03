@@ -11,15 +11,6 @@
     android:layout_height="match_parent"
     tools:context=".PairingActivity"
     android:orientation="horizontal">
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipFilters"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:chipSpacing="8dp"
-        app:singleSelection="false">
-
-    </com.google.android.material.chip.ChipGroup>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChoices"
         android:layout_width="409dp"

@@ -14,7 +14,7 @@ public class User extends ParseUser {
     public User(){}
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_PROFILE_IMAGE = "profilePicture";
-    public static final String KEY_AFFILIATIONS = "affiliations";
+    public static final String KEY_MEMBERSHIPS = "affiliations";
     public static final String KEY_TAGS = "tags";
 
 
@@ -28,8 +28,8 @@ public class User extends ParseUser {
         put(KEY_PROFILE_IMAGE, parseFile);
     }
 
-    public ArrayList getAffiliations(){ return (ArrayList <Affiliation>) get(KEY_AFFILIATIONS); }
-    public void addAffiliation(Affiliation affiliation){ addUnique(KEY_AFFILIATIONS, affiliation); }
+    public ArrayList getMemberships(){ return (ArrayList <Membership>) get(KEY_MEMBERSHIPS); }
+    public void addMembership(Membership membership){ addUnique(KEY_MEMBERSHIPS, membership); }
 
     public ArrayList getTags(){ return (ArrayList <Tag>) get(KEY_TAGS); }
     public void addTag(Tag tag){ addUnique(KEY_TAGS, tag); }

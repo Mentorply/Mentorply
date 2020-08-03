@@ -20,9 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.mentorply.CreateProgramActivity;
 import com.example.mentorply.LoginActivity;
-import com.example.mentorply.ProgramCodeActivity;
 import com.example.mentorply.R;
 import com.example.mentorply.models.Tag;
 import com.google.android.material.chip.Chip;
@@ -145,5 +143,4 @@ public class SettingsFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

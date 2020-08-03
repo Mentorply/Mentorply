@@ -1,6 +1,7 @@
 package com.example.mentorply.fragments;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,11 +20,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.example.mentorply.LoginActivity;
 import com.example.mentorply.R;
+import com.example.mentorply.RequestsActivity;
 import com.example.mentorply.adapters.ChoicesAdapter;
 import com.example.mentorply.adapters.ProgramAdapter;
-import com.example.mentorply.models.Affiliation;
+import com.example.mentorply.models.Membership;
+import com.example.mentorply.models.Pair;
 import com.example.mentorply.models.Program;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -105,7 +110,7 @@ public class ConnectionsFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), GridLayoutManager.VERTICAL);
         rvConnections.setLayoutManager(gridLayoutManager);
         //rvPrograms.addItemDecoration(new SpacesItemDecoration(DividerItemDecoration.VERTICAL));
-        queryPairs();
+        queryAllPairs();
 
     }
 
@@ -117,31 +122,75 @@ public class ConnectionsFragment extends Fragment {
         swipeContainer.setRefreshing(false);
     }
 
-    protected void queryPairs() {
-///*
-
-        ParseQuery<Affiliation> connectionsQuery = ParseQuery.getQuery(Affiliation.class);
-        connectionsQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        //programsQuery.include(Program.KEY_NAME);
-        connectionsQuery.whereEqualTo("participant", ParseUser.getCurrentUser());
-        connectionsQuery.whereNotEqualTo("pair", null);
-        connectionsQuery.findInBackground(new FindCallback<Affiliation>() {
+    protected void queryAllPairs() {
+        queryMentors();
+        queryMentees();
+    }
+    protected void queryMentors(){
+        ParseQuery<Pair> mentorsQuery = ParseQuery.getQuery(Pair.class);
+        mentorsQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        mentorsQuery.whereEqualTo("mentee", ParseUser.getCurrentUser());
+        mentorsQuery.findInBackground(new FindCallback<Pair>() {
             List <ParseUser> connections = new ArrayList<>();
             @Override
-            public void done(List<Affiliation> affiliations, ParseException e) {
+            public void done(List<Pair> pairs, ParseException e) {
                 if (e!=null){
-                    Log.e(TAG, "Issue with getting programs", e);
+                    Log.e(TAG, "Issue with getting mentees", e);
                     return;
                 }
-                for (Affiliation affiliation: affiliations){
-                    ParseUser connection = affiliation.getPair();
-                    connection.saveInBackground();
-                    connections.add(connection);
+                for (Pair pair: pairs){
+                    ParseUser mentor = pair.getMentor();
+                    mentor.saveInBackground();
+                    connections.add(mentor);
                 }//+program.getObjectId()
                 allConnections.addAll(connections);
                 adapter.notifyDataSetChanged();
             }
         });
+
+    }
+    protected void queryMentees(){
+        ParseQuery<Pair> menteesQuery = ParseQuery.getQuery(Pair.class);
+        menteesQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        menteesQuery.whereEqualTo("mentor", ParseUser.getCurrentUser());
+        menteesQuery.findInBackground(new FindCallback<Pair>() {
+            List <ParseUser> connections = new ArrayList<>();
+            @Override
+            public void done(List<Pair> pairs, ParseException e) {
+                if (e!=null){
+                    Log.e(TAG, "Issue with getting mentors", e);
+                    return;
+                }
+                for (Pair pair: pairs){
+                    ParseUser mentee = pair.getMentee();
+                    mentee.saveInBackground();
+                    connections.add(mentee);
+                }//+program.getObjectId()
+                allConnections.addAll(connections);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.requests_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_requests:
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+                Intent i = new Intent(getContext(), RequestsActivity.class);
+                startActivity(i);
+                Toast.makeText(getActivity(), "Logout", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 //    @Override

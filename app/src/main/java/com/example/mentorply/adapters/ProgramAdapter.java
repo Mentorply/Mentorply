@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mentorply.DetailedProgramsActivity;
 import com.example.mentorply.R;
-import com.example.mentorply.models.Affiliation;
 import com.example.mentorply.models.Program;
 import com.parse.ParseFile;
 

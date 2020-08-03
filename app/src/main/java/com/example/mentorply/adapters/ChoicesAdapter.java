@@ -1,14 +1,13 @@
 package com.example.mentorply.adapters;
 
-
+//this should only be used in the Pairing Activity, which has a reference to a program
 import android.content.Context;
 import android.content.Intent;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CompoundButton;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,29 +15,29 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 //import org.parceler.Parcels;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
-import com.example.mentorply.ProfileActivity;
+
+import com.example.mentorply.ChoiceProfileActivity;
 import com.example.mentorply.R;
-import com.example.mentorply.models.Tag;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHolder> {
+public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHolder> implements Filterable {
     Context context;
     List<ParseUser> users;
+    List<ParseUser> usersAll;
 
     //Pass in the context and list of users
     public ChoicesAdapter(Context context, List<ParseUser> users) {
         this.context = context;
         this.users = users;
+        this.usersAll = users;
     }
 
     //For each row, inflate the layout
@@ -75,12 +74,52 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
         notifyDataSetChanged();
     }
 
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        //run on background thread
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List <ParseUser> filteredList = new ArrayList<>();
+
+            if (charSequence.toString().isEmpty()||charSequence.length() == 0){
+                filteredList.addAll(usersAll);
+            }
+            else{
+                for(ParseUser user: usersAll){
+                    if(user.getUsername().toLowerCase().contains(charSequence.toString().toLowerCase())){
+                        filteredList.add(user);
+                    }
+//                    else {
+//                        List <Tag> tags = user.getList("tags");
+//                        for (Tag tag : tags)
+//                        if (tag.getName().toLowerCase().contains(charSequence.toString().toLowerCase()))
+//                            filteredList.add(user);
+//                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+        //runs on a UI thread
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            users.clear();
+            users.addAll((Collection<? extends ParseUser>) filterResults.values);
+            notifyDataSetChanged();
+
+        }
+    };
     //Define a viewholder
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView ivProfileImage;
         TextView tvUserDescription;
         TextView tvName;
-        Button messageButton;
+        //Button messageButton;
         ChipGroup chipsUser;
 
 
@@ -89,9 +128,26 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvUserDescription = itemView.findViewById(R.id.tvUserDescription);
             tvName = itemView.findViewById(R.id.tvName);
-            messageButton = itemView.findViewById(R.id.message_button);
-            chipsUser = itemView.findViewById(R.id.chipsUser);
+            //messageButton = itemView.findViewById(R.id.message_button);
+            //chipsUser = itemView.findViewById(R.id.chipsUser);
             itemView.setOnClickListener(this);
+
+//            //messageButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+////                    ParseQuery<Affiliation> query = ParseQuery.getQuery("Affiliation");
+////                    query.whereEqualTo("playerEmail", "dstemkoski@example.com");
+////                    query.getFirstInBackground(new GetCallback<Affiliation>() {
+////                        public void done(Affiliation object, ParseException e) {
+////                            if (object == null) {
+////                                Log.d("score", "The getFirst request failed.");
+////                            } else {
+////                                Log.d("score", "Retrieved the object.");
+////                            }
+////                        }
+////                    });
+               // }
+            //});
         }
 
         public void bind(ParseUser user) {
@@ -105,11 +161,11 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
 //            } catch (ParseException e) {
 //                e.printStackTrace();
 //            }
-//            Glide.with(context)
-//                    .load(user.getParseFile("profilePicture"))
-//                    //.transform(new CircleCrop())
-//                    //.apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
-//                    .into(ivProfileImage);
+            Glide.with(context)
+                    .load(user.getParseFile("profilePicture"))
+                    //.transform(new CircleCrop())
+                    //.apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
+                    .into(ivProfileImage);
         }
 //        public void setCategoryChips(List<Tag> tags) {
 //            for (Tag tag : tags) {
@@ -142,7 +198,7 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
                 // get the movie at the position, this won't work if the class is static
                 ParseUser user = users.get(position);
                 // create intent for the new activity
-                Intent intent = new Intent(context, ProfileActivity.class);
+                Intent intent = new Intent(context, ChoiceProfileActivity.class);
                 // serialize the movie using parceler, use its short name as a key
                 intent.putExtra(ParseUser.class.getSimpleName(), Parcels.wrap(user));
                 // show the activity
