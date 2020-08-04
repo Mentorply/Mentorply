@@ -117,20 +117,36 @@ public class ConnectionsFragment extends Fragment {
     }
 
     protected void queryAllPairs() {
+        queryToPairs();
+        queryFromPairs();
+
+//        mainQuery.findInBackground(new FindCallback<Pair>() {
+//             new ArrayList<>();
+//
+//            public void done(List<Pair> pairs, ParseException e) {
+//                if (e != null) {
+//                    Log.e(TAG, "Issue with getting mentees", e);
+//                    return;
+//                }
+        List<Pair> pairs = ParseUser.getCurrentUser().<Pair>getList("pairs");
+        List<ParseUser> connections = new ArrayList<>();
+                for (Pair pair : pairs) {
+                    ParseUser fromUser = pair.getFromUser();
+                    fromUser.saveInBackground();
+                    connections.add(fromUser);
+                }//+program.getObjectId()
+                allConnections.addAll();
+                adapter.notifyDataSetChanged();
+            //}
+        //});
+    }
+
+    private void queryFromPairs() {
         ParseQuery<Pair> fromQuery = ParseQuery.getQuery(Pair.class);
         fromQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         fromQuery.whereEqualTo("fromUser", ParseUser.getCurrentUser());
-
-        ParseQuery<Pair> toQuery = ParseQuery.getQuery(Pair.class);
-        toQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        toQuery.whereEqualTo("fromUser", ParseUser.getCurrentUser());
-
-        List<ParseQuery<Pair>> queries = new ArrayList<ParseQuery<Pair>>();
-        queries.add(fromQuery);
-        queries.add(toQuery);
-
-        ParseQuery<Pair> mainQuery = ParseQuery.or(queries);
-        mainQuery.findInBackground(new FindCallback<Pair>() {
+        fromQuery.whereEqualTo("status", "accepted");
+        fromQuery.findInBackground(new FindCallback<Pair>() {
             List<ParseUser> connections = new ArrayList<>();
 
             public void done(List<Pair> pairs, ParseException e) {
@@ -147,6 +163,18 @@ public class ConnectionsFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+
+
+
+    }
+
+    private void queryToPairs() {
+        ParseQuery<Pair> toQuery = ParseQuery.getQuery(Pair.class);
+        toQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        toQuery.whereEqualTo("toUser", ParseUser.getCurrentUser());
+        toQuery.whereEqualTo("status", "accepted");
+
+
     }
 
     @Override

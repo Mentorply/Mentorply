@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mentorply.R;
 import com.example.mentorply.adapters.ChoicesAdapter;
+import com.example.mentorply.adapters.RequestsAdapter;
 import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Pair;
 import com.example.mentorply.models.Program;
@@ -29,8 +30,8 @@ public class RequestsActivity extends AppCompatActivity {
 
     //Program program;
     RecyclerView rvRequests;
-    List<ParseUser> users;
-    ChoicesAdapter adapter;
+    List<Pair> pairs;
+    RequestsAdapter adapter;
     //EndlessRecyclerViewScrollListener scrollListener;
 
 
@@ -43,41 +44,37 @@ public class RequestsActivity extends AppCompatActivity {
         rvRequests = findViewById(R.id.rvRequests);
         //Init the list of tweets and adapter
         //program = Parcels.unwrap(getIntent().getParcelableExtra(Program.class.getSimpleName()));
-        users = new ArrayList<>();
-        adapter = new ChoicesAdapter(this, users);
+        pairs = new ArrayList<>();
+        adapter = new RequestsAdapter(this, pairs);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         //Recycler view setup: layout manager and the adapter
         rvRequests.setLayoutManager(layoutManager);
         rvRequests.setAdapter(adapter);
-        queryParseUsers();//getCurrentRoleToQuery()
+        queryPairs();//getCurrentRoleToQuery()
 
     }
 
     // String currentRole
-    protected void queryParseUsers() {
+    protected void queryPairs() {
         final ParseQuery<Pair> query = ParseQuery.getQuery(Pair.class);
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         //programsQuery.include(Program.KEY_NAME);
         query.whereEqualTo("status", "pending");
-        query.whereNotEqualTo("fromUser", ParseUser.getCurrentUser());
+        query.whereEqualTo("toUser", ParseUser.getCurrentUser());
         //query.whereEqualTo("role", currentRole);
-        query.whereNotEqualTo("participant", ParseUser.getCurrentUser());
-
 
         query.findInBackground(new FindCallback<Pair>() {
-            List <ParseUser> participants = new ArrayList<ParseUser>();
+            List <Pair> results = new ArrayList<Pair>();
             @Override
-            public void done(List<Pair> pairs, ParseException e) {
+            public void done(List<Pair> pairz, ParseException e) {
                 if (e!=null){
                     Log.e(TAG, "Issue with getting programs", e);
                     return;
                 }
-                for (Pair pair: pairs){
-                    ParseUser request = pair.getFromUser();
-                    request.saveInBackground();
-                    participants.add(request);
+                for (Pair pair: pairz){
+                    results.add(pair);
                 }//+program.getObjectId()
-                users.addAll(participants);
+                pairs.addAll(results);
                 adapter.notifyDataSetChanged();
             }
         });

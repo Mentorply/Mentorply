@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activities.pairing.AcceptRequestActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -36,6 +37,7 @@
         <activity android:name=".activities.accounts.SignupActivity" />
         <activity android:name=".activities.MainActivity" /> <!-- <activity android:name=".LoginActivity" /> -->
         <activity android:name=".activities.accounts.LoginActivity">
+
             <!--  -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
