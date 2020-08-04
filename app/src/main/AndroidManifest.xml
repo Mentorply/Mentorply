@@ -29,6 +29,7 @@
 
         <activity android:name=".activities.pairing.PairingActivity" />
         <activity android:name=".activities.pairing.ChoiceProfileActivity" />
+        <activity android:name=".activities.pairing.RequestsActivity" />
         <activity android:name=".activities.program.CreateProgramActivity" />
         <activity android:name=".activities.program.JoinProgramActivity" />
         <activity android:name=".activities.program.DetailedProgramsActivity" />

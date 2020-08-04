@@ -69,7 +69,7 @@ public class ConnectionsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
         //getActivity().getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         //getActivity().getActionBar().setCustomView(R.layout.);
         rvConnections = view.findViewById(R.id.rvConnections);
@@ -159,11 +159,9 @@ public class ConnectionsFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_requests:
-                ParseUser.logOut();
-                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
                 Intent i = new Intent(getContext(), RequestsActivity.class);
                 startActivity(i);
-                Toast.makeText(getActivity(), "Logout", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Requests", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);

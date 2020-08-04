@@ -119,7 +119,6 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
         ImageView ivProfileImage;
         TextView tvUserDescription;
         TextView tvName;
-        //Button messageButton;
         ChipGroup chipsUser;
 
 
@@ -128,26 +127,8 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvUserDescription = itemView.findViewById(R.id.tvUserDescription);
             tvName = itemView.findViewById(R.id.tvName);
-            //messageButton = itemView.findViewById(R.id.message_button);
             //chipsUser = itemView.findViewById(R.id.chipsUser);
             itemView.setOnClickListener(this);
-
-//            //messageButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-////                    ParseQuery<Affiliation> query = ParseQuery.getQuery("Affiliation");
-////                    query.whereEqualTo("playerEmail", "dstemkoski@example.com");
-////                    query.getFirstInBackground(new GetCallback<Affiliation>() {
-////                        public void done(Affiliation object, ParseException e) {
-////                            if (object == null) {
-////                                Log.d("score", "The getFirst request failed.");
-////                            } else {
-////                                Log.d("score", "Retrieved the object.");
-////                            }
-////                        }
-////                    });
-               // }
-            //});
         }
 
         public void bind(ParseUser user) {

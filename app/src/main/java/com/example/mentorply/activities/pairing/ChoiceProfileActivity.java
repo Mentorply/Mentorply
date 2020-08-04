@@ -32,8 +32,6 @@ public class ChoiceProfileActivity extends AppCompatActivity {
     public static final String TAG = "ChoiceProfileActivity";
 
     ParseUser user;
-    Program program;
-
     ImageView ivProfileImage;
     TextView tvName;
     TextView tvDescription;
@@ -50,8 +48,6 @@ public class ChoiceProfileActivity extends AppCompatActivity {
         btnRequest = findViewById(R.id.btnRequest);
 
         user = Parcels.unwrap(getIntent().getParcelableExtra(ParseUser.class.getSimpleName()));
-        program = Parcels.unwrap(getIntent().getParcelableExtra(Program.class.getSimpleName()));
-
         tvName.setText(user.getString("username"));
         tvDescription.setText(user.getString("description"));
         if (user.getParseFile("profilePicture") != null) {
