@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 //import org.parceler.Parcels;
 import com.bumptech.glide.Glide;
-import com.example.mentorply.DetailedProgramsActivity;
+import com.example.mentorply.activities.program.DetailedProgramsActivity;
 import com.example.mentorply.R;
 import com.example.mentorply.models.Program;
 import com.parse.ParseFile;
@@ -21,7 +21,6 @@ import com.parse.ParseFile;
 
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHolder> implements View.OnClickListener{

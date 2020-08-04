@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 //import org.parceler.Parcels;
 import com.bumptech.glide.Glide;
 
-import com.example.mentorply.ChoiceProfileActivity;
+import com.example.mentorply.activities.pairing.ChoiceProfileActivity;
 import com.example.mentorply.R;
 import com.google.android.material.chip.ChipGroup;
 import com.parse.ParseException;

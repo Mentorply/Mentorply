@@ -1,4 +1,4 @@
-package com.example.mentorply;
+package com.example.mentorply.activities.program;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.mentorply.R;
 import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Program;
 import com.parse.GetCallback;

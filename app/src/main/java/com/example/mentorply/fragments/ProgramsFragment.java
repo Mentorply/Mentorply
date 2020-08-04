@@ -19,8 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.mentorply.CreateProgramActivity;
-import com.example.mentorply.JoinProgramActivity;
+import com.example.mentorply.activities.program.CreateProgramActivity;
+import com.example.mentorply.activities.program.JoinProgramActivity;
 import com.example.mentorply.R;
 import com.example.mentorply.adapters.ProgramAdapter;
 import com.example.mentorply.models.Membership;

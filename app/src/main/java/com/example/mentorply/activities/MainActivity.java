@@ -1,4 +1,4 @@
-package com.example.mentorply;
+package com.example.mentorply.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.mentorply.R;
 import com.example.mentorply.fragments.ConnectionsFragment;
 import com.example.mentorply.fragments.ProgramsFragment;
 import com.example.mentorply.fragments.SettingsFragment;

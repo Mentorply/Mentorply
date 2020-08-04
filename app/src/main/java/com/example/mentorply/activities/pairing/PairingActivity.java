@@ -1,4 +1,4 @@
-package com.example.mentorply;
+package com.example.mentorply.activities.pairing;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import androidx.appcompat.widget.SearchView;
 
+import com.example.mentorply.R;
 import com.example.mentorply.adapters.ChoicesAdapter;
 import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Program;
@@ -54,18 +55,12 @@ public class PairingActivity extends AppCompatActivity {
         //Recycler view setup: layout manager and the adapter
         rvChoices.setLayoutManager(layoutManager);
         rvChoices.setAdapter(adapter);
-        queryParseUsers();
+        queryParseUsers(getCurrentRoleToQuery());
 
     }
-
-   protected void queryParseUsers() {
-       final ParseQuery<Membership> query = ParseQuery.getQuery(Membership.class);
-       query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-       //programsQuery.include(Program.KEY_NAME);
-       query.whereEqualTo("program", program);
-
-
-       ParseQuery<Membership> subQuery = ParseQuery.getQuery("Membership");
+    protected String getCurrentRoleToQuery(){
+        final String[] role = {""};
+        ParseQuery<Membership> subQuery = ParseQuery.getQuery("Membership");
        subQuery.whereEqualTo("participant", ParseUser.getCurrentUser());
        subQuery.getFirstInBackground(new GetCallback<Membership>() {
            public void done(Membership object, ParseException e) {
@@ -74,15 +69,24 @@ public class PairingActivity extends AppCompatActivity {
                } else {
                    Log.d("score", "Retrieved the object.");
                    if (object.getRole().equals("mentee"))
-                       query.whereEqualTo("role", "mentor");
+                       role[0] = "mentor";
                    else
-                       query.whereEqualTo("role", "mentee");
+                       role[0] = "mentee";
                }
            }
        });
+       return role[0];
+    }
 
 
-//*/
+   protected void queryParseUsers(String currentRole) {
+       final ParseQuery<Membership> query = ParseQuery.getQuery(Membership.class);
+       query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+       //programsQuery.include(Program.KEY_NAME);
+       query.whereEqualTo("program", program);
+       query.whereNotEqualTo("participant", ParseUser.getCurrentUser());
+       query.whereEqualTo("role", currentRole);
+
        query.findInBackground(new FindCallback<Membership>() {
            List <ParseUser> participants = new ArrayList<ParseUser>();
            @Override

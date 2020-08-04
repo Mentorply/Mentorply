@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.mentorply.LoginActivity;
+import com.example.mentorply.activities.accounts.LoginActivity;
 import com.example.mentorply.R;
 import com.example.mentorply.models.Tag;
 import com.google.android.material.chip.Chip;

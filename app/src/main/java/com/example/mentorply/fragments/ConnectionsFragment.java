@@ -1,12 +1,10 @@
 package com.example.mentorply.fragments;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,17 +17,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.mentorply.LoginActivity;
 import com.example.mentorply.R;
-import com.example.mentorply.RequestsActivity;
+import com.example.mentorply.activities.pairing.RequestsActivity;
 import com.example.mentorply.adapters.ChoicesAdapter;
-import com.example.mentorply.adapters.ProgramAdapter;
-import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Pair;
-import com.example.mentorply.models.Program;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;

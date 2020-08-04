@@ -1,4 +1,4 @@
-package com.example.mentorply;
+package com.example.mentorply.activities.pairing;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.mentorply.R;
 import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Pair;
 import com.example.mentorply.models.Program;
