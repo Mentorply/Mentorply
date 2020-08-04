@@ -55,7 +55,7 @@ public class PairingActivity extends AppCompatActivity {
         //Recycler view setup: layout manager and the adapter
         rvChoices.setLayoutManager(layoutManager);
         rvChoices.setAdapter(adapter);
-        queryParseUsers(getCurrentRoleToQuery());
+        queryParseUsers();//getCurrentRoleToQuery()
 
     }
     protected String getCurrentRoleToQuery(){
@@ -78,14 +78,15 @@ public class PairingActivity extends AppCompatActivity {
        return role[0];
     }
 
-
-   protected void queryParseUsers(String currentRole) {
+   // String currentRole
+   protected void queryParseUsers() {
        final ParseQuery<Membership> query = ParseQuery.getQuery(Membership.class);
        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
        //programsQuery.include(Program.KEY_NAME);
        query.whereEqualTo("program", program);
+       //query.whereEqualTo("role", currentRole);
        query.whereNotEqualTo("participant", ParseUser.getCurrentUser());
-       query.whereEqualTo("role", currentRole);
+
 
        query.findInBackground(new FindCallback<Membership>() {
            List <ParseUser> participants = new ArrayList<ParseUser>();

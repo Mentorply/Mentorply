@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.mentorply.R;
 import com.example.mentorply.activities.pairing.RequestsActivity;
 import com.example.mentorply.adapters.ChoicesAdapter;
+import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Pair;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -116,56 +117,38 @@ public class ConnectionsFragment extends Fragment {
     }
 
     protected void queryAllPairs() {
-        queryMentors();
-        queryMentees();
-    }
-    protected void queryMentors(){
-        ParseQuery<Pair> mentorsQuery = ParseQuery.getQuery(Pair.class);
-        mentorsQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        mentorsQuery.whereEqualTo("mentee", ParseUser.getCurrentUser());
-        mentorsQuery.findInBackground(new FindCallback<Pair>() {
-            List <ParseUser> connections = new ArrayList<>();
-            @Override
+        ParseQuery<Pair> fromQuery = ParseQuery.getQuery(Pair.class);
+        fromQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        fromQuery.whereEqualTo("fromUser", ParseUser.getCurrentUser());
+
+        ParseQuery<Pair> toQuery = ParseQuery.getQuery(Pair.class);
+        toQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        toQuery.whereEqualTo("fromUser", ParseUser.getCurrentUser());
+
+        List<ParseQuery<Pair>> queries = new ArrayList<ParseQuery<Pair>>();
+        queries.add(fromQuery);
+        queries.add(toQuery);
+
+        ParseQuery<Pair> mainQuery = ParseQuery.or(queries);
+        mainQuery.findInBackground(new FindCallback<Pair>() {
+            List<ParseUser> connections = new ArrayList<>();
+
             public void done(List<Pair> pairs, ParseException e) {
-                if (e!=null){
+                if (e != null) {
                     Log.e(TAG, "Issue with getting mentees", e);
                     return;
                 }
-                for (Pair pair: pairs){
-                    ParseUser mentor = pair.getMentor();
-                    mentor.saveInBackground();
-                    connections.add(mentor);
+                for (Pair pair : pairs) {
+                    ParseUser fromUser = pair.getFromUser();
+                    fromUser.saveInBackground();
+                    connections.add(fromUser);
                 }//+program.getObjectId()
                 allConnections.addAll(connections);
                 adapter.notifyDataSetChanged();
             }
         });
-
     }
-    protected void queryMentees(){
-        ParseQuery<Pair> menteesQuery = ParseQuery.getQuery(Pair.class);
-        menteesQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        menteesQuery.whereEqualTo("mentor", ParseUser.getCurrentUser());
-        menteesQuery.findInBackground(new FindCallback<Pair>() {
-            List <ParseUser> connections = new ArrayList<>();
-            @Override
-            public void done(List<Pair> pairs, ParseException e) {
-                if (e!=null){
-                    Log.e(TAG, "Issue with getting mentors", e);
-                    return;
-                }
-                for (Pair pair: pairs){
-                    ParseUser mentee = pair.getMentee();
-                    mentee.saveInBackground();
-                    connections.add(mentee);
-                }//+program.getObjectId()
-                allConnections.addAll(connections);
-                adapter.notifyDataSetChanged();
-            }
-        });
 
-
-    }
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

@@ -23,6 +23,7 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class ChoiceProfileActivity extends AppCompatActivity {
     TextView tvName;
     TextView tvDescription;
     Button btnRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,48 +54,75 @@ public class ChoiceProfileActivity extends AppCompatActivity {
 
         tvName.setText(user.getString("username"));
         tvDescription.setText(user.getString("description"));
-        if (user.getParseFile("profilePicture")!=null){
+        if (user.getParseFile("profilePicture") != null) {
             Glide.with(this).load(user.getParseFile("profilePicture").getUrl()).into(ivProfileImage);
         }
+
+        if (!isPair())
+            btnRequest.setEnabled(true);
+        else
+            btnRequest.setEnabled(false);
 
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Pair pair = new Pair();
-                if (isCurrentUserMentor()==false){
-                    pair.setMentee(ParseUser.getCurrentUser());
-                    pair.setMentor(user);
-                }
-                else{
-                    pair.setMentee(user);
-                    pair.setMentor(ParseUser.getCurrentUser());
-                }
                 pair.setStatus("pending");
+                pair.setFromUser(ParseUser.getCurrentUser());
+                pair.setToUser(user);
                 pair.saveInBackground();
-                program.addPair(pair);
+                btnRequest.setEnabled(false);
+                //program.addPair(pair);
             }
         });
     }
 
-    protected boolean isCurrentUserMentor() {
-        final ParseQuery<Membership> query = ParseQuery.getQuery(Membership.class);
-        //final String[] role = {""};
-        final boolean[] isMentor = {true};
-        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        //programsQuery.include(Program.KEY_NAME);
-        query.whereEqualTo("program", program);
-        query.whereEqualTo("participant", ParseUser.getCurrentUser());
-        query.getFirstInBackground(new GetCallback<Membership>() {
-            public void done(Membership membership, ParseException e) {
-                if (membership == null) {
-                    Log.d("score", "The getFirst request failed.");
-                } else {
-                    if (membership.getRole().equals("mentee"))
-                        isMentor[0] = false;
+    private boolean isPair() {
+        final boolean[] connected = {false};
+        // Define the class we would like to query
+        ParseQuery<Pair> query1 = ParseQuery.getQuery(Pair.class);
+        // Define our query conditions
+        query1.whereEqualTo("fromUser", ParseUser.getCurrentUser().getObjectId());
+        query1.whereEqualTo("toUser", user.getObjectId());
+        query1.getFirstInBackground(new GetCallback<Pair>() {
+            public void done(Pair pair, ParseException e) {
+                if (pair != null) {
+                    connected[0] = true;
                 }
+//                else {
+//
+//                }
             }
 
         });
-        return isMentor[0];
+
+        ParseQuery<Pair> query2 = ParseQuery.getQuery(Pair.class);
+        query2.whereEqualTo("toUser", ParseUser.getCurrentUser().getObjectId());
+        query2.whereEqualTo("fromUser", user.getObjectId());
+        query2.getFirstInBackground(new GetCallback<Pair>() {
+            public void done(Pair pair, ParseException e) {
+                if (pair != null) {
+                    connected[0] = true;
+                }
+//                else {
+//
+//                }
+            }
+        });
+
+//
+//
+//        // Execute the find asynchronously
+//        ParseQuery<Membership> mainQuery = ParseQuery.or(queries);
+//        mainQuery.findInBackground(new FindCallback<Membership>() {
+//            public void done(List<Membership> memberships, ParseException e) {
+//                if (e == null) { connected[0] = true;
+//                    // Access the array of results here
+//                } else {
+//                    Log.d("item", "Error: " + e.getMessage());
+//                }
+//            }
+//        });
+        return connected[0];
     }
 }
