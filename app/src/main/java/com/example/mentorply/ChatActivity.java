@@ -22,6 +22,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
 
     EditText etMessage;
     ImageButton btSend;
-
+    ParseUser recipient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class ChatActivity extends AppCompatActivity {
         etMessage = (EditText) findViewById(R.id.etMessage);
         btSend = (ImageButton) findViewById(R.id.btSend);
         rvChat = (RecyclerView) findViewById(R.id.rvChat);
+        recipient = Parcels.unwrap(getIntent().getParcelableExtra(ParseUser.class.getSimpleName()));
         mMessages = new ArrayList<>();
         mFirstLoad = true;
         final String userId = ParseUser.getCurrentUser().getObjectId();
@@ -74,13 +77,10 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String data = etMessage.getText().toString();
-                //ParseObject message = ParseObject.create("Message");
-                //message.put(Message.USER_ID_KEY, userId);
-                //message.put(Message.BODY_KEY, data);
-                // Using new `Message` Parse-backed model now
                 Message message = new Message();
                 message.setBody(data);
-                message.setUserId(ParseUser.getCurrentUser().getObjectId());
+                message.setFromUser(ParseUser.getCurrentUser());
+                message.setToUser(recipient);
                 message.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {

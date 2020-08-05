@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.mentorply.R;
 import com.example.mentorply.activities.pairing.RequestsActivity;
 import com.example.mentorply.adapters.ChoicesAdapter;
+import com.example.mentorply.adapters.ConnectionsAdapter;
 import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Pair;
 import com.parse.FindCallback;
@@ -36,7 +37,7 @@ public class ConnectionsFragment extends Fragment {
 
     public static final String TAG = "ConnectionsFragment";
     private RecyclerView rvConnections;
-    public ChoicesAdapter adapter;
+    public ConnectionsAdapter adapter;
     protected List<ParseUser> allConnections;
     private SwipeRefreshLayout swipeContainer;
 
@@ -65,7 +66,7 @@ public class ConnectionsFragment extends Fragment {
         //getActivity().getActionBar().setCustomView(R.layout.);
         rvConnections = view.findViewById(R.id.rvConnections);
         allConnections = new ArrayList<>();
-        adapter = new ChoicesAdapter(getContext(), allConnections);
+        adapter = new ConnectionsAdapter(getContext(), allConnections);
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
