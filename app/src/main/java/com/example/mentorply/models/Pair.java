@@ -14,11 +14,6 @@ public class Pair extends ParseObject {
     public static final String KEY_STATUS= "status";
 
 
-//    public Program getProgram(){ return (Program) get(KEY_PROGRAM); }
-//    public void setProgram(Program program){
-//        put(KEY_PROGRAM, program);
-//    }
-
     public ParseUser getFromUser(){ return getParseUser(KEY_FROM_USER); }
     public void setFromUser(ParseUser fromUser){ put(KEY_FROM_USER, fromUser); }
 

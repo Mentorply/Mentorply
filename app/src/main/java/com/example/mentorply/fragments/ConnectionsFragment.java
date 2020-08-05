@@ -38,20 +38,11 @@ public class ConnectionsFragment extends Fragment {
     private RecyclerView rvConnections;
     public ChoicesAdapter adapter;
     protected List<ParseUser> allConnections;
-    //public int totalPrograms = 20;
     private SwipeRefreshLayout swipeContainer;
 
 
     public ConnectionsFragment() {
         // Required empty public constructor
-    }
-
-    // TODO: Rename and change types and number of parameters
-    public static ConnectionsFragment newInstance(String param1, String param2) {
-        ConnectionsFragment fragment = new ConnectionsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -119,26 +110,6 @@ public class ConnectionsFragment extends Fragment {
     protected void queryAllPairs() {
         queryToPairs();
         queryFromPairs();
-
-//        mainQuery.findInBackground(new FindCallback<Pair>() {
-//             new ArrayList<>();
-//
-//            public void done(List<Pair> pairs, ParseException e) {
-//                if (e != null) {
-//                    Log.e(TAG, "Issue with getting mentees", e);
-//                    return;
-//                }
-        List<Pair> pairs = ParseUser.getCurrentUser().<Pair>getList("pairs");
-        List<ParseUser> connections = new ArrayList<>();
-                for (Pair pair : pairs) {
-                    ParseUser fromUser = pair.getFromUser();
-                    fromUser.saveInBackground();
-                    connections.add(fromUser);
-                }//+program.getObjectId()
-                allConnections.addAll();
-                adapter.notifyDataSetChanged();
-            //}
-        //});
     }
 
     private void queryFromPairs() {
@@ -173,6 +144,23 @@ public class ConnectionsFragment extends Fragment {
         toQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         toQuery.whereEqualTo("toUser", ParseUser.getCurrentUser());
         toQuery.whereEqualTo("status", "accepted");
+        toQuery.findInBackground(new FindCallback<Pair>() {
+            List<ParseUser> connections = new ArrayList<>();
+
+            public void done(List<Pair> pairs, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting mentees", e);
+                    return;
+                }
+                for (Pair pair : pairs) {
+                    ParseUser fromUser = pair.getFromUser();
+                    fromUser.saveInBackground();
+                    connections.add(fromUser);
+                }
+                allConnections.addAll(connections);
+                adapter.notifyDataSetChanged();
+            }
+        });
 
 
     }

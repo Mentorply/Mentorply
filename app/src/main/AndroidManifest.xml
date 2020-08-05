@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.pairing.AcceptRequestActivity"></activity>
+        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".activities.pairing.AcceptRequestActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
