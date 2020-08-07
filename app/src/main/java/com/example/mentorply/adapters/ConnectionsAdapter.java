@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.mentorply.ChatActivity;
 import com.example.mentorply.R;
 import com.example.mentorply.activities.pairing.ChoiceProfileActivity;
+import com.example.mentorply.models.Pair;
 import com.google.android.material.chip.ChipGroup;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -27,18 +28,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.ViewHolder> implements Filterable {
+public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.ViewHolder>  {//implements Filterable
     Context context;
-    List<ParseUser> users;
-    List<ParseUser> usersAll;
-
-    //Pass in the context and list of users
-    public ConnectionsAdapter(Context context, List<ParseUser> users) {
-        this.context = context;
-        this.users = users;
-        this.usersAll = users;
-    }
-
+    //List<ParseUser> users;
+    //List<ParseUser> usersAll;
+    List <Pair> pairs;
+    List <Pair> pairsAll;
+//
+//    //Pass in the context and list of users
+//    public ConnectionsAdapter(Context context, List<ParseUser> users) {
+//        this.context = context;
+//        this.users = users;
+//        this.usersAll = users;
+//    }
+//Pass in the context and list of users
+public ConnectionsAdapter(Context context, List<Pair> pairs) {
+    this.context = context;
+    this.pairs = pairs;
+}
     //For each row, inflate the layout
     @NonNull
     @Override
@@ -51,68 +58,69 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //get the data at the position
-        ParseUser user = users.get(position);
+        Pair pair = pairs.get(position);
         //bind the user with view holder
-        holder.bind(user);
+        holder.bind(pair);
     }
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return pairs.size();
     }
 
     public void clear() {
-        users.clear();
+        pairs.clear();
         notifyDataSetChanged();
     }
 
     ;
 
-    public void addAll(List<ParseUser> userList) {
-        users.addAll(userList);
+    public void addAll(List<Pair> pairsList) {
+        pairs.addAll(pairsList);
         notifyDataSetChanged();
     }
 
-    @Override
-    public Filter getFilter() {
-        return filter;
-    }
-
-    Filter filter = new Filter() {
-        //run on background thread
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            List <ParseUser> filteredList = new ArrayList<>();
-
-            if (charSequence.toString().isEmpty()||charSequence.length() == 0){
-                filteredList.addAll(usersAll);
-            }
-            else{
-                for(ParseUser user: usersAll){
-                    if(user.getUsername().toLowerCase().contains(charSequence.toString().toLowerCase())){
-                        filteredList.add(user);
-                    }
-//                    else {
-//                        List <Tag> tags = user.getList("tags");
-//                        for (Tag tag : tags)
-//                        if (tag.getName().toLowerCase().contains(charSequence.toString().toLowerCase()))
-//                            filteredList.add(user);
+//    @Override
+//    public Filter getFilter() {
+//        return filter;
+//    }
+//
+//    Filter filter = new Filter() {
+//        //run on background thread
+//        @Override
+//        protected FilterResults performFiltering(CharSequence charSequence) {
+//            List <ParseUser> filteredList = new ArrayList<>();
+//
+//            if (charSequence.toString().isEmpty()||charSequence.length() == 0){
+//                filteredList.addAll(pairsAll);
+//            }
+//            else{
+//                for(ParseUser user: usersAll){
+//                    if(user.getUsername().toLowerCase().contains(charSequence.toString().toLowerCase())){
+//                        filteredList.add(user);
 //                    }
-                }
-            }
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = filteredList;
-            return filterResults;
-        }
-        //runs on a UI thread
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            users.clear();
-            users.addAll((Collection<? extends ParseUser>) filterResults.values);
-            notifyDataSetChanged();
+////                    else {
+////                        List <Tag> tags = user.getList("tags");
+////                        for (Tag tag : tags)
+////                        if (tag.getName().toLowerCase().contains(charSequence.toString().toLowerCase()))
+////                            filteredList.add(user);
+////                    }
+//                }
+//            }
+//            FilterResults filterResults = new FilterResults();
+//            filterResults.values = filteredList;
+//            return filterResults;
+//        }
+//        //runs on a UI thread
+//        @Override
+//        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+//            users.clear();
+//            users.addAll((Collection<? extends ParseUser>) filterResults.values);
+//            notifyDataSetChanged();
+//
+//        }
+//    };
 
-        }
-    };
     //Define a viewholder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView ivProfileImage;
@@ -130,7 +138,14 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             itemView.setOnClickListener(this);
         }
 
-        public void bind(ParseUser user) {
+        public void bind(Pair pair) {
+            ParseUser user;
+            if (pair.getFromUser().equals(ParseUser.getCurrentUser())){
+                user = pair.getToUser();
+            }
+            else{
+                user = pair.getFromUser();
+            }
             try {
                 tvName.setText(user.fetchIfNeeded().getString("username"));
             } catch (ParseException e) {
@@ -176,11 +191,11 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             // make sure the position is valid, i.e. actually exists in the view
             if (position != RecyclerView.NO_POSITION) {
                 // get the movie at the position, this won't work if the class is static
-                ParseUser user = users.get(position);
+                Pair pair = pairs.get(position);
                 // create intent for the new activity
                 Intent intent = new Intent(context, ChatActivity.class);
                 // serialize the movie using parceler, use its short name as a key
-                intent.putExtra(ParseUser.class.getSimpleName(), Parcels.wrap(user));
+                intent.putExtra(Pair.class.getSimpleName(), Parcels.wrap(pair));
                 // show the activity
                 context.startActivity(intent);
 

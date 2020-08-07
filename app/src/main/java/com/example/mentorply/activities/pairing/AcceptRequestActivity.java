@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.mentorply.R;
 import com.example.mentorply.activities.accounts.LoginActivity;
+import com.example.mentorply.models.ChatRoom;
 import com.example.mentorply.models.Pair;
 import com.example.mentorply.models.User;
 import com.parse.ParseUser;
@@ -54,6 +55,9 @@ public class AcceptRequestActivity extends AppCompatActivity {
                 pair.saveInBackground();
                 ParseUser.getCurrentUser().add("pairs", pair);
                 user.add("pairs", pair);
+                ChatRoom chatRoom = new ChatRoom();
+                chatRoom.setPair(pair);
+                chatRoom.saveInBackground();
                 Intent i = new Intent(AcceptRequestActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();

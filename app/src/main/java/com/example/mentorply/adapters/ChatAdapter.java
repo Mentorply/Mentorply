@@ -31,7 +31,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
 
     public ChatAdapter(Context context, String userId, List<Message> messages) {
         mMessages = messages;
-        this.mUserId = userId;
+        //this.mUserId = userId;
         mContext = context;
     }
     public abstract class MessageViewHolder extends RecyclerView.ViewHolder {

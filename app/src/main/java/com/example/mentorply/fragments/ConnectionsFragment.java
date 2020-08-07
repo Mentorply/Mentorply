@@ -23,6 +23,7 @@ import com.example.mentorply.R;
 import com.example.mentorply.activities.pairing.RequestsActivity;
 import com.example.mentorply.adapters.ChoicesAdapter;
 import com.example.mentorply.adapters.ConnectionsAdapter;
+import com.example.mentorply.models.ChatRoom;
 import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Pair;
 import com.parse.FindCallback;
@@ -38,7 +39,7 @@ public class ConnectionsFragment extends Fragment {
     public static final String TAG = "ConnectionsFragment";
     private RecyclerView rvConnections;
     public ConnectionsAdapter adapter;
-    protected List<ParseUser> allConnections;
+    protected List<Pair> allConnections;
     private SwipeRefreshLayout swipeContainer;
 
 
@@ -126,12 +127,12 @@ public class ConnectionsFragment extends Fragment {
                     Log.e(TAG, "Issue with getting mentees", e);
                     return;
                 }
-                for (Pair pair : pairs) {
-                    ParseUser fromUser = pair.getFromUser();
-                    fromUser.saveInBackground();
-                    connections.add(fromUser);
-                }//+program.getObjectId()
-                allConnections.addAll(connections);
+//                for (Pair pair : pairs) {
+//                    ParseUser fromUser = pair.getFromUser();
+//                    fromUser.saveInBackground();
+//                    connections.add(fromUser);
+//                }//+program.getObjectId()
+                allConnections.addAll(pairs);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -153,12 +154,12 @@ public class ConnectionsFragment extends Fragment {
                     Log.e(TAG, "Issue with getting mentees", e);
                     return;
                 }
-                for (Pair pair : pairs) {
-                    ParseUser fromUser = pair.getFromUser();
-                    fromUser.saveInBackground();
-                    connections.add(fromUser);
-                }
-                allConnections.addAll(connections);
+//                for (Pair pair : pairs) {
+//                    ParseUser fromUser = pair.getFromUser();
+//                    fromUser.saveInBackground();
+//                    connections.add(fromUser);
+//                }
+                allConnections.addAll(pairs);
                 adapter.notifyDataSetChanged();
             }
         });
