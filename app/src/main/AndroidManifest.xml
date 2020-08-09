@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChatActivity"></activity>
+
+        <activity android:name=".ChatActivity" />
         <activity android:name=".activities.pairing.AcceptRequestActivity" />
 
         <provider
@@ -28,7 +29,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/fileprovider" />
         </provider>
-
+        <activity android:name=".activities.accounts.LoginActivity"/>
         <activity android:name=".activities.pairing.PairingActivity" />
         <activity android:name=".activities.pairing.ChoiceProfileActivity" />
         <activity android:name=".activities.pairing.RequestsActivity" />
@@ -37,8 +38,7 @@
         <activity android:name=".activities.program.DetailedProgramsActivity" />
         <activity android:name=".activities.accounts.SignupActivity" />
         <activity android:name=".activities.MainActivity" /> <!-- <activity android:name=".LoginActivity" /> -->
-        <activity android:name=".activities.accounts.LoginActivity">
-
+        <activity android:name=".SplashScreenActivity">
             <!--  -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

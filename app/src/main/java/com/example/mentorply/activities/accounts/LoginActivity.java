@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mentorply.activities.MainActivity;
@@ -22,12 +25,14 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etPassword;
     private Button btnLogin;
     //adding new stuff
-    private Button btnSignup;
+    //private Button btnSignup;
+    private TextView tvSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_new);
+        getSupportActionBar().hide();
 
         if (ParseUser.getCurrentUser()!=null){
             goMainActivity();
@@ -36,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        btnSignup = findViewById(R.id.btnSignup);
+        tvSignup = findViewById(R.id.tvSignup);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +53,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btnSignup.setOnClickListener(new View.OnClickListener() {
+        SpannableString content = new SpannableString("Don't have an account? Sign Up!");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        tvSignup.setText(content);
+
+        tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(LoginActivity.this, SignupActivity.class);

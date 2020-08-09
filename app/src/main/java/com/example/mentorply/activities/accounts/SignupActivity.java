@@ -76,6 +76,8 @@ public class SignupActivity extends AppCompatActivity {
         btnCaptureImage = findViewById(R.id.btnCaptureImage);
         ivPostImage = findViewById(R.id.ivPostImage);
         btnSelectImage = findViewById(R.id.btnSelectImage);
+        btnSelectImage.setVisibility(View.GONE);
+
 
         chipsCareers = findViewById(R.id.chipsCareers);
         chipsInterests = findViewById(R.id.chipsInterests);

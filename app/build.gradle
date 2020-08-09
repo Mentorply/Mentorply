@@ -64,6 +64,8 @@ dependencies {
 
     implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.139'
 
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
+
 
 
 }
