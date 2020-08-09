@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     android:orientation="vertical"
-    tools:context=".activities.accounts.LoginActivity">
+    tools:context=".activities.accounts.LoginActivity"
+    android:background="#2F0059">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -99,7 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Back to                              Login"
+        android:text="Back to Login"
         app:layout_constraintBottom_toBottomOf="parent" />
         </LinearLayout>
     </ScrollView>
