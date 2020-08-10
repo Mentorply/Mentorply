@@ -5,13 +5,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MotionEventCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -59,25 +62,11 @@ public class SettingsFragment extends Fragment {
         tvName.setText(currentUser.getString("name"));
         tvDescription.setText(currentUser.getString("description"));
         if (currentUser.getParseFile("profilePicture")!=null){
-            Glide.with(this).load(currentUser.getParseFile("profilePicture").getUrl()).into(ivProfileImage);
+            Glide.with(this).load(currentUser.getParseFile("profilePicture").getUrl()).circleCrop().into(ivProfileImage);
         }
         List <Tag> tags = currentUser.getList("tags");
         if (tags!=null)
             setCategoryChips(tags);
-
-//        FloatingActionButton fab = view.findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                EditProfileFragment nextFrag= new EditProfileFragment();
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(view.getParent()., nextFrag, "findThisFragment")
-//                        .addToBackStack(null)
-//                        .commit();
-//
-//            }
-//        });
-
 
     }
     @Override
@@ -93,6 +82,8 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_profile, container, false);
+
+
     }
 
     public void setCategoryChips(List<Tag> tags) {
@@ -141,4 +132,5 @@ public class SettingsFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

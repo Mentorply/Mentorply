@@ -16,6 +16,16 @@ android:layout_height="match_parent">
     android:layout_margin="8dp"
     android:orientation="vertical">
 
+    <!--Recycler View widget-->
+
+
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="181dp"
+        android:scaleType="centerCrop"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <TextView
         android:id="@+id/tvProgramName"
         android:layout_width="match_parent"
@@ -26,16 +36,6 @@ android:layout_height="match_parent">
         android:textSize="30sp"
         tools:text="MentorFIU" />
 
-    <!--Recycler View widget-->
-
-
-    <ImageView
-        android:id="@+id/ivImage"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/tvUserDescription"
         android:layout_width="match_parent"
@@ -45,12 +45,11 @@ android:layout_height="match_parent">
         android:scrollbars = "vertical"
         tools:text="This program is dseigned for people from all different backgrounds!" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMentors"
+    <TextView
+        android:id="@+id/tvProgramCode"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp"
-        android:orientation="horizontal"/>
+        android:layout_height="wrap_content"
+        android:text="Code:" />
 
     <TextView
         android:id="@+id/tvUpdates"
@@ -66,7 +65,7 @@ android:layout_height="match_parent">
         android:id="@+id/btnPairings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="To Pairing!!" />
+        android:text="available pairs" />
 
 
 </LinearLayout>

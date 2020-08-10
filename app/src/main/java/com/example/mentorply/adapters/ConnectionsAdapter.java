@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mentorply.ChatActivity;
 import com.example.mentorply.R;
 import com.example.mentorply.activities.pairing.ChoiceProfileActivity;
@@ -157,11 +159,13 @@ public ConnectionsAdapter(Context context, List<Pair> pairs) {
 //            } catch (ParseException e) {
 //                e.printStackTrace();
 //            }
-            Glide.with(context)
+            Glide
+                    .with(context)
                     .load(user.getParseFile("profilePicture").getUrl())
-                    //.transform(new CircleCrop())
-                    //.apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
+                    .circleCrop()
                     .into(ivProfileImage);
+
         }
         //        public void setCategoryChips(List<Tag> tags) {
 //            for (Tag tag : tags) {

@@ -50,8 +50,8 @@
         android:id="@+id/btnConfirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/btnUploadImage"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="256dp"
+        android:layout_marginTop="75dp"
         android:text="Confirm" />
 </RelativeLayout>

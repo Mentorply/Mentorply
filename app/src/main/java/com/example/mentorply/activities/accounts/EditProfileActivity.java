@@ -55,6 +55,7 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        getSupportActionBar().setTitle("Edit Profile");  // provide compatibility to all the versions
 
         btnCaptureImage = findViewById(R.id.btnCaptureImage);
         ivPostImage = findViewById(R.id.ivPostImage);
@@ -65,7 +66,10 @@ public class EditProfileActivity extends AppCompatActivity {
         etName = findViewById(R.id.etName);
         etDescription = findViewById(R.id.etDescription);
         ParseUser currentUser = ParseUser.getCurrentUser();
-        Glide.with(this).load(currentUser.getParseFile("profilePicture").getUrl()).into(ivPostImage);
+        if (currentUser.getParseFile("profilePicture")!=null){
+            Glide.with(this).load(currentUser.getParseFile("profilePicture").getUrl()).circleCrop().into(ivPostImage);
+
+        }
         //photoFile = new ParseFile(currentUser.getParseFile("profilePicture"));
         etName.setText(currentUser.getString("name"));
         etDescription.setText(currentUser.getString("description"));
