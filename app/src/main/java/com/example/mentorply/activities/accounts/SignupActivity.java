@@ -106,13 +106,13 @@ public class SignupActivity extends AppCompatActivity {
 //        });
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
-                                             Log.i(TAG, "onclick signup button");
-                                             String username = etUsername.getText().toString();
-                                             String password = etPassword.getText().toString();
-                                             //loginUser(username,password);
+                Log.i(TAG, "onclick signup button");
+                String username = etUsername.getText().toString();
+                String password = etPassword.getText().toString();
+                //loginUser(username,password);
 //                tags = new ArrayList<Tag>();
 //                for (int i=0; i<chipsCareers.getChildCount();i++){
 //                    Chip chip = (Chip)chipsCareers.getChildAt(i);
@@ -214,7 +214,7 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     etUsername.setText("");
                     etPassword.setText("");
-//                    ivPostImage.setImageResource(0);
+                    //ivPostImage.setImageResource(0);
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong

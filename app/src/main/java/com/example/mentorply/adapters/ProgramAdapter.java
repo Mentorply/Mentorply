@@ -2,6 +2,7 @@ package com.example.mentorply.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mentorply.activities.program.DetailedProgramsActivity;
 import com.example.mentorply.R;
+import com.example.mentorply.models.Membership;
 import com.example.mentorply.models.Program;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.sendbird.android.Member;
 
 //import org.parceler.Parcels;
 
@@ -85,7 +93,6 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
                     Intent i = new Intent(context, DetailedProgramsActivity.class);
                     i.putExtra(Program.class.getSimpleName(), Parcels.wrap(program));
                     context.startActivity(i);
-
                 }
             });
 
@@ -99,6 +106,28 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
             if (image!=null){
                 Glide.with(context).load(program.getImage().getUrl()).into(ivProfileImage);
             }
+            tvRole.setText(getRole(program));
         }
+
+        private String getRole(Program program) {
+            final String[] role = {""};
+
+            ParseQuery<Membership> query = ParseQuery.getQuery(Membership.class);
+            query.whereEqualTo("participant", ParseUser.getCurrentUser());
+            query.whereEqualTo("program", program);
+
+            query.getFirstInBackground(new GetCallback<Membership>() {
+                public void done(Membership membership, ParseException e) {
+                    if (membership == null) {
+                        Log.d("score", "The getFirst request failed.");
+                    } else {
+                        role[0] = membership.getRole();
+                    }
+                }
+            });
+            return role[0];
+        }
+
+
     }
 }

@@ -143,7 +143,7 @@ public class ChoicesAdapter extends RecyclerView.Adapter<ChoicesAdapter.ViewHold
 //                e.printStackTrace();
 //            }
             Glide.with(context)
-                    .load(user.getParseFile("profilePicture"))
+                    .load(user.getParseFile("profilePicture").getUrl())
                     //.transform(new CircleCrop())
                     //.apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                     .into(ivProfileImage);

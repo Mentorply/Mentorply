@@ -52,4 +52,9 @@ public class MainActivity extends AppCompatActivity {
      bottomNavigationView.setSelectedItemId(R.id.action_programs);
     }
 
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
+
 }

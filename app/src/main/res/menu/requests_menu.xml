@@ -4,7 +4,6 @@
 
     <item
         android:id="@+id/action_requests"
-        android:icon="@android:drawable/ic_menu_send"
-        android:title="Logout"
+        android:title="Requests"
         app:showAsAction="always" />
 </menu>

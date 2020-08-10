@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.mentorply.activities.MainActivity;
 import com.example.mentorply.activities.program.CreateProgramActivity;
 import com.example.mentorply.activities.program.JoinProgramActivity;
 import com.example.mentorply.R;
@@ -45,7 +46,13 @@ public class ProgramsFragment extends Fragment {
     public ProgramsFragment() {
         // Required empty public constructor
     }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MainActivity) getActivity())
+                .setActionBarTitle("Programs");
 
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment

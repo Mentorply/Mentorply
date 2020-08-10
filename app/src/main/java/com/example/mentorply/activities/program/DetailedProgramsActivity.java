@@ -48,6 +48,7 @@ public class DetailedProgramsActivity extends AppCompatActivity {
                 Intent i = new Intent(view.getContext(), PairingActivity.class);
                 Bundle extras = new Bundle();
                 i.putExtra(Program.class.getSimpleName(), Parcels.wrap(program));
+
                 startActivity(i);
             }
         });

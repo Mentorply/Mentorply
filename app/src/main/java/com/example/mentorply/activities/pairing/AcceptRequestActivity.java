@@ -29,6 +29,7 @@ public class AcceptRequestActivity extends AppCompatActivity {
     TextView tvName;
     TextView tvDescription;
     Button btnAccept;
+    Button btnDeny;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,8 @@ public class AcceptRequestActivity extends AppCompatActivity {
         ivProfileImage = findViewById(R.id.ivProfileImage);
         tvName = findViewById(R.id.tvName);
         tvDescription = findViewById(R.id.tvUserDescription);
-        btnAccept = findViewById(R.id.btnRequest);
+        btnAccept = findViewById(R.id.btnAccept);
+        btnDeny = findViewById(R.id.btnDeny);
 
         pair = Parcels.unwrap(getIntent().getParcelableExtra(Pair.class.getSimpleName()));
         user = pair.getFromUser();
@@ -58,6 +60,22 @@ public class AcceptRequestActivity extends AppCompatActivity {
                 ChatRoom chatRoom = new ChatRoom();
                 chatRoom.setPair(pair);
                 chatRoom.saveInBackground();
+                Intent i = new Intent(AcceptRequestActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        btnDeny.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pair.setStatus("denied");
+                pair.saveInBackground();
+                //ParseUser.getCurrentUser().add("pairs", pair);
+                //user.add("pairs", pair);
+                //ChatRoom chatRoom = new ChatRoom();
+                //chatRoom.setPair(pair);
+                //chatRoom.saveInBackground();
                 Intent i = new Intent(AcceptRequestActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();

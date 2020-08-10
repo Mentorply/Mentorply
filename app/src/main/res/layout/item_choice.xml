@@ -39,6 +39,16 @@
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="Azhar Ali" />
 
+    <TextView
+        android:id="@+id/tvRole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="9dp"
+        android:text="Mentor" />
+
 
 </RelativeLayout>
     </androidx.cardview.widget.CardView>

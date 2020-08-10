@@ -98,7 +98,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
 //                e.printStackTrace();
 //            }
             Glide.with(context)
-                    .load(user.getParseFile("profilePicture"))
+                    .load(user.getParseFile("profilePicture").getUrl())
                     //.transform(new CircleCrop())
                     //.apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                     .into(ivProfileImage);

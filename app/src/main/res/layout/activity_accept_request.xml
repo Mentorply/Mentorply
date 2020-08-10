@@ -50,12 +50,22 @@
                 android:textSize="18sp" />
 
             <Button
-                android:id="@+id/btnRequest"
+                android:id="@+id/btnAccept"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="Accept to Pair"
+                android:text="Accept"
                 android:enabled="true" />
+
+            <Button
+                android:id="@+id/btnDeny"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:enabled="true"
+                android:text="Deny"
+                android:textColorHighlight="@android:color/holo_red_dark"
+                android:textColorLink="@android:color/holo_red_dark" />
 
         </LinearLayout>
     </ScrollView>

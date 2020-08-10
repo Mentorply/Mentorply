@@ -22,4 +22,8 @@ public class Pair extends ParseObject {
 
     public String getStatus(){ return getString(KEY_STATUS); }
     public void setStatus(String status){ put(KEY_STATUS, status); }
+
+    public String getProgram(){ return getString(KEY_PROGRAM); }
+    public void setProgram(Program program){ put(KEY_PROGRAM, program); }
+
 }

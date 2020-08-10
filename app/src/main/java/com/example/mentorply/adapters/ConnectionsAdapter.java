@@ -126,6 +126,7 @@ public ConnectionsAdapter(Context context, List<Pair> pairs) {
         ImageView ivProfileImage;
         TextView tvUserDescription;
         TextView tvName;
+        TextView tvRole;
         ChipGroup chipsUser;
 
 
@@ -157,7 +158,7 @@ public ConnectionsAdapter(Context context, List<Pair> pairs) {
 //                e.printStackTrace();
 //            }
             Glide.with(context)
-                    .load(user.getParseFile("profilePicture"))
+                    .load(user.getParseFile("profilePicture").getUrl())
                     //.transform(new CircleCrop())
                     //.apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                     .into(ivProfileImage);

@@ -20,11 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.mentorply.activities.MainActivity;
+import com.example.mentorply.activities.accounts.EditProfileActivity;
 import com.example.mentorply.activities.accounts.LoginActivity;
 import com.example.mentorply.R;
 import com.example.mentorply.models.Tag;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -52,7 +56,7 @@ public class SettingsFragment extends Fragment {
         chipsPrograms = view.findViewById(R.id.chipsPrograms);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
-        tvName.setText(currentUser.getString("username"));
+        tvName.setText(currentUser.getString("name"));
         tvDescription.setText(currentUser.getString("description"));
         if (currentUser.getParseFile("profilePicture")!=null){
             Glide.with(this).load(currentUser.getParseFile("profilePicture").getUrl()).into(ivProfileImage);
@@ -60,6 +64,27 @@ public class SettingsFragment extends Fragment {
         List <Tag> tags = currentUser.getList("tags");
         if (tags!=null)
             setCategoryChips(tags);
+
+//        FloatingActionButton fab = view.findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                EditProfileFragment nextFrag= new EditProfileFragment();
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(view.getParent()., nextFrag, "findThisFragment")
+//                        .addToBackStack(null)
+//                        .commit();
+//
+//            }
+//        });
+
+
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MainActivity) getActivity())
+                .setActionBarTitle("Profile");
 
     }
 
@@ -106,6 +131,11 @@ public class SettingsFragment extends Fragment {
                 ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
                 Intent i = new Intent(getContext(), LoginActivity.class);
                 startActivity(i);
+                Toast.makeText(getActivity(), "Logout", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_edit:
+                Intent j = new Intent(getContext(), EditProfileActivity.class);
+                startActivity(j);
                 Toast.makeText(getActivity(), "Logout", Toast.LENGTH_SHORT).show();
                 break;
         }

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mentorply.R;
+import com.example.mentorply.activities.MainActivity;
 import com.example.mentorply.activities.pairing.RequestsActivity;
 import com.example.mentorply.adapters.ChoicesAdapter;
 import com.example.mentorply.adapters.ConnectionsAdapter;
@@ -50,6 +51,9 @@ public class ConnectionsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MainActivity) getActivity())
+                .setActionBarTitle("Connections");
+
     }
 
     @Override
@@ -63,6 +67,7 @@ public class ConnectionsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
+        //setTitle("My new title");
         //getActivity().getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         //getActivity().getActionBar().setCustomView(R.layout.);
         rvConnections = view.findViewById(R.id.rvConnections);
